@@ -2,6 +2,9 @@ var express = require ("express");
 var app = express();
 var path = require("path");
 const ejs = require('ejs');
+const connection = require("./config/database.js");
+const Empresa = require("./model/Empresa");
+const Usuario = require("./model/Usuario");
 
 app.get('/', function(req, res){
     res.render("index.ejs", {});
