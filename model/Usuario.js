@@ -1,12 +1,13 @@
 const mysql = require("mysql2/promise");
 
 class Usuario {
-  constructor(nome, cpf, endereco, email, senha) {
+  constructor(nome, cpf, endereco, email, senha, telefone) {
     this.nome = nome;
-    this.cnpj = cpf;
-    this.ramo = endereco;
+    this.cpf = cpf;
+    this.endereco = endereco;
     this.email = email;
     this.senha = senha;
+    this.telefone = telefone;
   }
 
   async adicionar() {
@@ -18,8 +19,8 @@ class Usuario {
     });
 
     const [rows, fields] = await connection.execute(
-      "INSERT INTO usuario (nome, cpf, endereco, email, senha) VALUES (?, ?, ?, ?, ?)",
-      [this.nome, this.cpf, this.endereco, this.email, this.senha]
+      "INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
+      [this.nome, this.cpf, this.endereco, this.email, this.senha, this.telefone]
     );
 
     await connection.end();

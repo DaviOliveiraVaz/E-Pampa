@@ -14,6 +14,25 @@ app.get('/login', function(req, res){
     res.render("login.ejs", {});
 });
 
+app.post('/login', function(req, res){
+    var usuario = new Usuario({
+        nome: req.body.nome,
+        cpf: req.body.cpf,
+        endereco: req.body.endereco,
+        email: req.body.email,
+        senha: req.body.senha,
+        telefone: req.body.telefone
+    });
+
+    usuario.save(function(err, docs){
+        if(err){
+            res.send("Deu o seguinte erro ao cadastrar o usuário: " + err);
+        } else{
+            res.redirect("/usuarios");
+        }
+    });
+});
+
 app.get('/produtos', function(req, res){
     res.render("produtos.ejs", {});
 });
