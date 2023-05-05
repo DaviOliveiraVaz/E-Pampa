@@ -1,0 +1,135 @@
+*,
+html,
+body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-color: #dbdbdbd8;
+    font-size: 20px;
+    font-style: Garamond;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+header {
+    border-style: inset;
+    border-color: black;
+    text-align: left;
+    padding-left: 40px;
+    position: relative;
+    height: 50px;
+    font-size: 27px;
+    background-color: #a3a3a3d8;
+}
+
+#cabecalho {
+    font-size: 25px;
+    margin-top: 7px;
+}
+
+#cadastrar {
+    padding-left: 35px;
+    position: absolute;
+}
+
+#login {
+    padding-right: 40px;
+    position: absolute;
+    right: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: rgb(102, 102, 102);
+}
+
+main {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+h1 {
+    width: 100%;
+}
+
+p {
+    font-size: 20px;
+}
+
+input {
+    width: 100%;
+    border-color: black;
+    border-style: inset;
+    background-color: #f0f0f0d8;
+    color: black;
+    border-radius: 4.5px;
+}
+
+form {
+    height: 20%;
+    width: 100%;
+    margin: 0 auto;
+    color: black;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 80px;
+    padding: 0 80px;
+}
+
+#atv {
+    font-size: 20px;
+    color: rgb(54, 54, 54);
+}
+
+#env {
+    width: 50%;
+    border-color: black;
+    border-style: inset;
+    color: black;
+    border-radius: 4.5px;
+    font-size: 18px;
+    color: rgb(54, 54, 54);
+    position: relative;
+    text-align: center;
+    padding: 5px 5px;
+    margin: 20px;
+}
+
+.pai {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+#cadastrados {
+    padding-top: 80px;
+}
+
+table,
+tr,
+td,
+th {
+    border: 1px solid black;
+    text-align: center;
+    margin: 0 auto;
+    top: 10px;
+    background-color: #f0f0f0d8;
+}
+
+button {
+    font-size: 20px;
+    color: rgb(54, 54, 54);
+    text-align: center;
+}

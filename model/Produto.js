@@ -1,13 +1,11 @@
 const mysql = require("mysql2/promise");
 const bodyParser = require("body-parser");
-class Usuario {
-  constructor(nome, cpf, endereco, email, senha, telefone) {
+class Produto {
+  constructor(nome, valor, descricao, empresa) {
     this.nome = nome;
-    this.cpf = cpf;
-    this.endereco = endereco;
-    this.email = email;
-    this.senha = senha;
-    this.telefone = telefone;
+    this.valor = valor;
+    this.descricao = descricao;
+    this.empresa = empresa;
   }
 
   async adicionar() {
@@ -19,8 +17,8 @@ class Usuario {
     });
 
     const [rows, fields] = await connection.execute(
-      "INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [this.nome, this.cpf, this.endereco, this.email, this.senha, this.telefone]
+      "INSERT INTO produto (nome, valor, descricao, empresa) VALUES (?, ?, ?, ?)",
+      [this.nome, this.valor, this.descricao, this.empresa]
     );
 
     await connection.end();
@@ -29,4 +27,4 @@ class Usuario {
   }
 }
 
-module.exports = Usuario;
+module.exports = Produto;
