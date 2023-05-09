@@ -20,12 +20,82 @@ class Usuario {
 
     const [rows, fields] = await connection.execute(
       "INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [this.nome, this.cpf, this.endereco, this.email, this.senha, this.telefone]
+      [
+        this.nome,
+        this.cpf,
+        this.endereco,
+        this.email,
+        this.senha,
+        this.telefone,
+      ]
     );
 
     await connection.end();
 
     return rows.insertId;
+  }
+
+  static async editar(id, usuario) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=? WHERE id=?",
+      [
+        usuario.nome,
+        usuario.cpf,
+        usuario.endereco,
+        usuario.email,
+        usuario.senha,
+        usuario.telefone,
+        id,
+      ]
+    );
+
+    await connection.end();
+
+    return rows.affectedRows;
+  }
+
+  async buscarPorId(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    // revisar o que retorna no resultado
+    const [rows, fields] = await connection.execute(
+      "SELECT id FROM usuario WHERE id = ?",
+      [id]
+    );
+
+    await connection.end();
+
+    return rows;
+  }
+
+  static async excluir(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "DELETE FROM usuario WHERE id = ?",
+      [id]
+    );
+
+    await connection.end();
+
+    return rows.affectedRows;
   }
 }
 

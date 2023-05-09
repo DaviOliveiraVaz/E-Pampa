@@ -20,12 +20,44 @@ class Empresa {
 
     const [rows, fields] = await connection.execute(
       "INSERT INTO empresa (nome, cnpj, ramo, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [this.nome, this.cnpj, this.ramo, this.email, this.senha, this.telefone]
+      [
+        this.nome, 
+        this.cnpj, 
+        this.ramo, 
+        this.email, 
+        this.senha, 
+        this.telefone]
     );
 
     await connection.end();
 
     return rows.insertId;
+  }
+
+  async editar(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "UPDATE empresa SET nome=?, cnpj=?, ramo=?, email=?, senha=?, telefone=? WHERE id=?",
+      [
+        this.nome, 
+        this.cnpj, 
+        this.ramo, 
+        this.email, 
+        this.senha, 
+        this.telefone,
+        id,
+      ]
+    );
+
+    await connection.end();
+
+    return rows.affectedRows;
   }
 }
 

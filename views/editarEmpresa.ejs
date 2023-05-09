@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Empresa</title>
+  <base href="/editarEmpresa">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <p id="cabecalho">
+      <a href="/">HOME</a>
+      <a href="cadastro" id="cadastro">CADASTRAR USUARIO</a>
+      <a href="empresa" id="empresa">CADASTRAR EMPRESA</a>
+    </p>
+  </header>
+
+  <main>
+    <h1>EDITAR EMPRESA</h1>
+    <form method="post" action="/empresa" id="form">
+  
+      <section>
+        <div>
+          <p>NOME</p>
+          <input type="text" name="nome" placeholder="Digite o nome" id="atv">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>CNPJ</p>
+            <input type="text" name="cnpj" placeholder="Digite o seu cnpj" id="atv">
+          </div>
+  
+          <div>
+            <p>RAMO</p>
+            <input type="text" name="ramo" placeholder="Digite o seu ramo" id="atv">
+          </div>
+        </div>
+        <button type="reset" id="env">Apagar</button>
+      </section>
+  
+      <section>
+        <div>
+          <p>E-MAIL</p>
+          <input type="text" name="email" placeholder="Digite o seu e-mail" id="atv">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>SENHA</p>
+            <input type="text" name="senha" placeholder="Digite uma senha" id="atv">
+          </div>
+  
+          <div>
+            <p>TELEFONE</p>
+            <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv">
+          </div>
+        </div>
+        <button type="submit" id="env">Enviar</button>
+      </section>
+  
+    </form>
+  </main>
+  
+</body>
+
+</html>
