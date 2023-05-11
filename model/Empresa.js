@@ -34,6 +34,49 @@ class Empresa {
     return rows.insertId;
   }
 
+  static async buscarPorId(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "SELECT id FROM empresa WHERE id = ?",
+      [id]
+    );
+
+    await connection.end();
+
+    return rows;
+  }
+
+  static async excluir(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "SELECT id FROM empresa WHERE id = ?",
+      [id]
+    );
+
+    const [deletedRows, deletedFields] = await connection.execute(
+      "DELETE FROM empresa WHERE id = ?",
+      [id]
+    );
+
+    await connection.end();
+
+    const IdDeletado = rows[0].id;
+
+    return IdDeletado;
+  }
+
   async editar(id) {
     const connection = await mysql.createConnection({
       host: "localhost",

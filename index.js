@@ -19,21 +19,39 @@ app.get("/cadastro", function (req, res) {
   res.render("cadastro.ejs", {});
 });
 
-app.get("/editarUsuario/:id", function (req, res) {
-  res.render("editarUsuario.ejs", {});
+app.get("/editarUsuario/:id", async (req, res) => {
+  const id = req.params.id;
+  const usuarioExistente = await Usuario.buscarPorId(id);
+  if (!usuarioExistente.length) {
+    return res.status(404).send("Usuário não encontrado!");
+  }
+  res.render("editarUsuario.ejs", { usuario: usuarioExistente[0] });
 });
 
-app.get("/excluirUsuario/:id", function (req, res) {
-  res.redirect("/");
+
+app.get("/excluirUsuario/:id", async (req, res) => {
+  const id = req.params.id;
+  const usuarioExistente = await Usuario.buscarPorId(id);
+  if (!usuarioExistente.length) {
+    return res.status(404).send("Usuário não encontrado!");
+  }
+  const idExcluido = await Usuario.excluir(id);
+  res.send(`Usuario excluído com sucesso. ID: ${idExcluido}`);
 });
 
 app.get("/empresa", function (req, res) {
   res.render("empresa.ejs", {});
 });
 
-/*app.get("/editarEmpresa", function (req, res) {
-  res.render("editarEmpresa.ejs", {});
-});*/
+app.get("/excluirEmpresa/:id", async (req, res) => {
+  const id = req.params.id;
+  const empresaExistente = await Empresa.buscarPorId(id);
+  if (!empresaExistente.length) {
+    return res.status(404).send("Empresa não encontrada!");
+  }
+  const idExcluido = await Empresa.excluir(id);
+  res.send(`Empresa excluída com sucesso. ID: ${idExcluido}`);
+});
 
 app.post("/cadastro", async (req, res) => {
   const { nome, cpf, endereco, email, senha, telefone } = req.body;
@@ -42,24 +60,12 @@ app.post("/cadastro", async (req, res) => {
   res.send(`Usuário cadastrado com sucesso. ID: ${idInserido}`);
 });
 
-app.put("/editarUsuario/:id", async (req, res) => {
+app.post("/editarUsuario/:id", async (req, res) => {
   const id = req.params.id;
-  const usuarioExistente = await Usuario.buscarPorId(id);
-  if (!usuarioExistente.length) {
-    return res.status(404).send("Usuário não encontrado!");
-  }
-  const idEditado = await Usuario.editar(id, req.body);
-  res.send(`Usuario editado com sucesso. ID: ${idEditado}`);
-});
-
-app.delete("/excluirUsuario/:id", async (req, res) => {
-  const id = req.params.id;
-  const usuarioExistente = await Usuario.buscarPorId(id);
-  if (!usuarioExistente.length) {
-    return res.status(404).send("Usuário não encontrado!");
-  }
-  const idExcluido = await Usuario.excluir(id);
-  res.send(`Usuario excluído com sucesso. ID: ${idExcluido}`);
+  const { nome, cpf, endereco, email, senha, telefone } = req.body;
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
+  const idEditado = await Usuario.editar(id, usuario);
+  res.send(`Usuário editado com sucesso. ID: ${idEditado}`);
 });
 
 app.post("/empresa", async (req, res) => {
