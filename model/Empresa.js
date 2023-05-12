@@ -20,13 +20,7 @@ class Empresa {
 
     const [rows, fields] = await connection.execute(
       "INSERT INTO empresa (nome, cnpj, ramo, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [
-        this.nome, 
-        this.cnpj, 
-        this.ramo, 
-        this.email, 
-        this.senha, 
-        this.telefone]
+      [this.nome, this.cnpj, this.ramo, this.email, this.senha, this.telefone]
     );
 
     await connection.end();
@@ -60,11 +54,6 @@ class Empresa {
       database: "epampa",
     });
 
-    const [rows, fields] = await connection.execute(
-      "SELECT id FROM empresa WHERE id = ?",
-      [id]
-    );
-
     const [deletedRows, deletedFields] = await connection.execute(
       "DELETE FROM empresa WHERE id = ?",
       [id]
@@ -72,12 +61,10 @@ class Empresa {
 
     await connection.end();
 
-    const IdDeletado = rows[0].id;
-
-    return IdDeletado;
+    return deletedRows;
   }
 
-  async editar(id) {
+  static async editar(id, empresa) {
     const connection = await mysql.createConnection({
       host: "localhost",
       user: "root",
@@ -85,22 +72,22 @@ class Empresa {
       database: "epampa",
     });
 
-    const [rows, fields] = await connection.execute(
+    const [editedRows, editedFields] = await connection.execute(
       "UPDATE empresa SET nome=?, cnpj=?, ramo=?, email=?, senha=?, telefone=? WHERE id=?",
       [
-        this.nome, 
-        this.cnpj, 
-        this.ramo, 
-        this.email, 
-        this.senha, 
-        this.telefone,
-        id,
+        empresa.nome,
+        empresa.cnpj,
+        empresa.ramo,
+        empresa.email,
+        empresa.senha,
+        empresa.telefone,
+        Number.parseInt(id),
       ]
     );
 
     await connection.end();
 
-    return rows.affectedRows;
+    return editedRows;
   }
 }
 

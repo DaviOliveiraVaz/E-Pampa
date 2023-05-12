@@ -1,11 +1,13 @@
 const mysql = require("mysql2/promise");
 const bodyParser = require("body-parser");
 class Produto {
-  constructor(nome, valor, descricao, empresa) {
+  constructor(nome, valor, descricao, empresa, frete, foto) {
     this.nome = nome;
     this.valor = valor;
     this.descricao = descricao;
     this.empresa = empresa;
+    this.frete = frete;
+    this.foto = foto;
   }
 
   async adicionar() {
@@ -17,8 +19,15 @@ class Produto {
     });
 
     const [rows, fields] = await connection.execute(
-      "INSERT INTO produto (nome, valor, descricao, empresa) VALUES (?, ?, ?, ?)",
-      [this.nome, this.valor, this.descricao, this.empresa]
+      "INSERT INTO produto (nome, valor, descricao, empresa, frete, foto) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        this.nome,
+        this.valor,
+        this.descricao,
+        this.empresa,
+        this.frete,
+        this.foto,
+      ]
     );
 
     await connection.end();

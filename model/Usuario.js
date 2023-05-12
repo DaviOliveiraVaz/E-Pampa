@@ -43,13 +43,8 @@ class Usuario {
       database: "epampa",
     });
 
-    const [rows, fields] = await connection.execute(
-      "SELECT id FROM usuario WHERE id = ?",
-      [id]
-    );
-
     const [editedRows, editedFields] = await connection.execute(
-      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=? WHERE id=?',
+      "UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=? WHERE id=?",
       [
         usuario.nome,
         usuario.cpf,
@@ -57,15 +52,13 @@ class Usuario {
         usuario.email,
         usuario.senha,
         usuario.telefone,
-        id
+        Number.parseInt(id),
       ]
     );
 
     await connection.end();
 
-    const IdEditado = rows[0].id;
-
-    return IdEditado;
+    return editedRows;
   }
 
   static async buscarPorId(id) {
@@ -94,11 +87,6 @@ class Usuario {
       database: "epampa",
     });
 
-    const [rows, fields] = await connection.execute(
-      "SELECT id FROM usuario WHERE id = ?",
-      [id]
-    );
-
     const [deletedRows, deletedFields] = await connection.execute(
       "DELETE FROM usuario WHERE id = ?",
       [id]
@@ -106,9 +94,7 @@ class Usuario {
 
     await connection.end();
 
-    const IdDeletado = rows[0].id;
-
-    return IdDeletado;
+    return deletedRows;
   }
 }
 

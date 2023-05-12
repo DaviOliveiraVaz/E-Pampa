@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Usuário</title>
   <base href="/editarUsuario/:id">
-  <link rel="stylesheet" href="../public/style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -21,22 +21,22 @@
 
   <main>
     <h1>EDITAR USUARIO</h1>
-    <form method="POST" action="/editarUsuario/:id" id="form">
+    <form class="edit-form" method="post" action="/editarUsuario/<%= usuario.id %>" id="form" onsubmit="alert('Usuário editado com sucesso!')">
       <section>
         <div>
           <p>NOME</p>
-          <input type="text" name="nome" placeholder="Digite o seu nome" id="atv">
+          <input type="text" name="nome" placeholder="Digite o seu nome" id="atv" value="<%= usuario.nome %>">
         </div>
   
         <div class="pai">
           <div>
             <p>CPF</p>
-            <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv">
+            <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv" value="<%= usuario.cpf %>">
           </div>
   
           <div>
             <p>ENDEREÇO</p>
-            <input type="text" name="endereco" placeholder="Digite o seu endereço" id="atv">
+            <input type="text" name="endereco" placeholder="Digite o seu endereço" id="atv" value="<%= usuario.endereco %>">
           </div>
         </div>
         <button type="reset" id="env">Apagar</button>
@@ -45,26 +45,25 @@
       <section>
         <div>
           <p>E-MAIL</p>
-          <input type="text" name="email" placeholder="Digite o seu e-mail" id="atv">
+          <input type="text" name="email" placeholder="Digite o seu e-mail" id="atv" value="<%= usuario.email %>">
         </div>
   
         <div class="pai">
           <div>
             <p>SENHA</p>
-            <input type="text" name="senha" placeholder="Digite uma senha" id="atv">
+            <input type="text" name="senha" placeholder="Digite uma senha" id="atv" value="<%= usuario.senha %>">
           </div>
   
           <div>
             <p>TELEFONE</p>
-            <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv">
+            <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" value="<%= usuario.telefone %>"> 
           </div>
         </div>
-        <button type="submit" id="env">Enviar</button>
+        <button type="submit" id="env" class="editar">Enviar</button>
       </section>
   
     </form>
   </main>
-  
 </body>
 
 </html>
