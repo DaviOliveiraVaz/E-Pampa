@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Produtos</title>
+  <base href="/produto">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <header>
+    <p id="cabecalho">
+      <a href="/">HOME</a>
+      <a href="cadastro" id="cadastro">CADASTRAR USUARIO</a>
+      <a href="empresa" id="empresa">CADASTRAR EMPRESA</a>
+    </p>
+  </header>
+
+  <main>
+    <h1>CADASTRO DE PRODUTO</h1>
+    <form method="post" action="/produto" id="form">
+  
+      <section>
+        <div>
+          <p>NOME</p>
+          <input type="text" name="nome" placeholder="Digite o nome do produto" id="atv">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>VALOR</p>
+            <input type="text" name="valor" placeholder="Digite o valor do produto" id="atv">
+          </div>
+  
+          <div>
+            <p>DESCRIÇÃO</p>
+            <input type="text" name="descricao" placeholder="Digite demais informações" id="atv">
+          </div>
+        </div>
+        <button type="reset" id="env">Apagar</button>
+      </section>
+  
+      <section>
+        <div>
+          <p>EMPRESA</p>
+          <input type="text" name="empresa" placeholder="Digite a sua empresa" id="atv">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>FRETE</p>
+            <input type="text" name="frete" placeholder="Digite o valor do frete" id="atv">
+          </div>
+  
+          <div>
+            <p>FOTO</p>
+            <input type="file" name="foto" placeholder="Informe uma foto do seu produto" id="atv">
+          </div>
+        </div>
+        <button type="submit" id="env">Enviar</button>
+      </section>
+  
+    </form>
+  </main>
+  
+</body>
+
+</html>

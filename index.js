@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const connection = require("./config/database.js");
 const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
+const Produto = require("./model/Produto");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -62,6 +63,10 @@ app.get("/excluirEmpresa/:id", async (req, res) => {
   res.send(`Empresa excluída com sucesso. ID: ${id}`);
 });
 
+app.get("/produto", function (req, res) {
+  res.render("produto.ejs", {});
+});
+
 app.post("/cadastro", async (req, res) => {
   const { nome, cpf, endereco, email, senha, telefone } = req.body;
   const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
@@ -94,6 +99,13 @@ app.post("/editarEmpresa/:id", async (req, res) => {
   res.send(
     `Empresa editada com sucesso. ID: ${id}`
   );
+});
+
+app.post("/produto", async (req, res) => {
+  const { nome, valor, descricao, empresa, frete, foto } = req.body;
+  const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
+  const idInserido = await produto.adicionar();
+  res.send(`Produto cadastrado com sucesso. ID: ${idInserido}`);
 });
 
 app.listen("3000", function () {
