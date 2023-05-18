@@ -11,9 +11,22 @@ const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
 const Produto = require("./model/Produto");
 
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", function (req, res) {
+  res.render("login.ejs", {});
+});
+
+app.get("/loja", function (req, res) {
+  res.render("index.ejs", {});
+});
+
+app.get("/redefinir", function (req, res) {
+  res.render("redefinicao.ejs", {});
+});
 
 app.get("/", function (req, res) {
   res.render("index.ejs", {});
@@ -69,6 +82,25 @@ app.get("/produto", function (req, res) {
   res.render("produto.ejs", {});
 });
 
+app.get("/editarProduto/:id", async (req, res) => {
+  const id = req.params.id;
+  const produtoExistente = await Produto.buscarPorId(id);
+  if (!(produtoExistente && produtoExistente.length)) {
+    return res.status(404).render("naoEncontrado.ejs");
+  }
+  res.render("editarProduto.ejs", { produto: produtoExistente[0] });
+});
+
+app.get("/excluirProduto/:id", async (req, res) => {
+  const id = req.params.id;
+  const produtoExistente = await Produto.buscarPorId(id);
+  if (!produtoExistente.length && produtoExistente.length) {
+    return res.status(404).send("Produto não encontrado!");
+  }
+  const deletedRows = await Produto.excluir(id);
+  res.send(`Produto excluído com sucesso. ID: ${id}`);
+});
+
 app.post("/cadastro", async (req, res) => {
   const { nome, cpf, endereco, email, senha, telefone } = req.body;
   const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
@@ -81,9 +113,7 @@ app.post("/editarUsuario/:id", async (req, res) => {
   const { nome, cpf, endereco, email, senha, telefone } = req.body;
   const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
   const editedROws = await Usuario.editar(id, usuario);
-  res.send(
-    `Usuário editado com sucesso. ID: ${id}`
-  );
+  res.send(`Usuário editado com sucesso. ID: ${id}`);
 });
 
 app.post("/empresa", async (req, res) => {
@@ -98,17 +128,24 @@ app.post("/editarEmpresa/:id", async (req, res) => {
   const { nome, cnpj, ramo, email, senha, telefone } = req.body;
   const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone);
   const editedROws = await Empresa.editar(id, empresa);
-  res.send(
-    `Empresa editada com sucesso. ID: ${id}`
-  );
+  res.send(`Empresa editada com sucesso. ID: ${id}`);
 });
 
 app.post("/produto", upload.single("foto"), async (req, res) => {
   const { nome, valor, descricao, empresa, frete } = req.body;
-  const foto = req.file ? req.file.path : null; 
+  const foto = req.file ? req.file.path : null;
   const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
   const idInserido = await produto.adicionar();
   res.send(`Produto cadastrado com sucesso. ID: ${idInserido}`);
+});
+
+app.post("/editarProduto/:id", upload.single("foto"), async (req, res) => {
+  const id = req.params.id;
+  const { nome, valor, descricao, empresa, frete } = req.body;
+  const foto = req.file ? req.file.path : null;
+  const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
+  const editedROws = await Produto.editar(id, produto);
+  res.send(`Produto editado com sucesso. ID: ${id}`);
 });
 
 app.listen("3000", function () {

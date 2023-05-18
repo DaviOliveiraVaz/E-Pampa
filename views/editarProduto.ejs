@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Produto</title>
+  <base href="/editarProduto/:id">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <header>
+    <p id="cabecalho">
+      <a href="/">HOME</a>
+      <a href="cadastro" id="cadastro">CADASTRAR USUARIO</a>
+      <a href="empresa" id="empresa">CADASTRAR EMPRESA</a>
+    </p>
+  </header>
+
+  <main>
+    <h1>EDITAR PRODUTO</h1>
+    <form class="edit-form" method="post" action="/editarProduto/<%= produto.id %>" id="form" enctype="multipart/form-data" onsubmit="alert('Produto editado com sucesso!')">
+      <section>
+        <div>
+          <p>NOME</p>
+          <input type="text" name="nome" placeholder="Digite o nome do produto" id="atv" value="<%= produto.nome %>">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>VALOR</p>
+            <input type="text" name="valor" placeholder="Digite o valor do produto" id="atv" value="<%= produto.cpf %>">
+          </div>
+  
+          <div>
+            <p>DESCRIÇÃO</p>
+            <input type="text" name="descricao" placeholder="Digite a descrição do produto" id="atv" value="<%= produto.endereco %>">
+          </div>
+        </div>
+        <button type="reset" id="env">Apagar</button>
+      </section>
+  
+      <section>
+        <div>
+          <p>EMPRESA</p>
+          <input type="text" name="empresa" placeholder="Digite a sua empresa" id="atv" value="<%= produto.email %>">
+        </div>
+  
+        <div class="pai">
+          <div>
+            <p>FRETE</p>
+            <input type="text" name="frete" placeholder="Digite o frete do produto" id="atv" value="<%= produto.senha %>">
+          </div>
+  
+          <div>
+            <p>FOTO</p>
+            <input type="file" name="foto" placeholder="Informe uma foto do produto" id="atv" value="<%= produto.telefone %>"> 
+          </div>
+        </div>
+        <button type="submit" id="env" class="editar">Enviar</button>
+      </section>
+  
+    </form>
+  </main>
+</body>
+
+</html>

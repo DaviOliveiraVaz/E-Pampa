@@ -21,7 +21,7 @@
 
   <main>
     <h1>CADASTRO DE PRODUTO</h1>
-    <form method="post" action="/produto" id="form">
+    <form method="post" action="/produto" id="form" enctype="multipart/form-data">
   
       <section>
         <div>
@@ -57,7 +57,7 @@
   
           <div>
             <p>FOTO</p>
-            <input type="file" name="foto" placeholder="Informe uma foto do seu produto" id="atv" enctype="multipart/form-data">
+            <input type="file" name="foto" placeholder="Informe uma foto do seu produto" id="atv">
           </div>
         </div>
         <button type="submit" id="env">Enviar</button>
