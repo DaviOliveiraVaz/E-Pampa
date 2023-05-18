@@ -3,6 +3,8 @@ const app = express();
 var path = require("path");
 const ejs = require("ejs");
 const mysql = require("mysql2/promise");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const bodyParser = require("body-parser");
 const connection = require("./config/database.js");
 const Empresa = require("./model/Empresa");
@@ -101,8 +103,9 @@ app.post("/editarEmpresa/:id", async (req, res) => {
   );
 });
 
-app.post("/produto", async (req, res) => {
-  const { nome, valor, descricao, empresa, frete, foto } = req.body;
+app.post("/produto", upload.single("foto"), async (req, res) => {
+  const { nome, valor, descricao, empresa, frete } = req.body;
+  const foto = req.file ? req.file.path : null; 
   const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
   const idInserido = await produto.adicionar();
   res.send(`Produto cadastrado com sucesso. ID: ${idInserido}`);

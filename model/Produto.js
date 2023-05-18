@@ -1,6 +1,17 @@
 const mysql = require("mysql2/promise");
-const bodyParser = require("body-parser");
+const multer = require("multer");
 const fs = require("fs");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 class Produto {
   constructor(nome, valor, descricao, empresa, frete, foto) {
     this.nome = nome;
@@ -40,4 +51,5 @@ class Produto {
   }
 }
 
-module.exports = Produto;
+
+module.exports = Produto, upload;
