@@ -1,5 +1,6 @@
 const mysql = require("mysql2/promise");
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
 class Usuario {
   constructor(nome, cpf, endereco, email, senha, telefone) {
     this.nome = nome;
@@ -11,23 +12,18 @@ class Usuario {
   }
 
   async adicionar() {
+    const senhaHash = await bcrypt.hash(this.senha, 10);
+
     const connection = await mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "41491912",
-      database: "epampa",
+      host: 'localhost',
+      user: 'root',
+      password: '41491912',
+      database: 'epampa',
     });
 
     const [rows, fields] = await connection.execute(
-      "INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [
-        this.nome,
-        this.cpf,
-        this.endereco,
-        this.email,
-        this.senha,
-        this.telefone,
-      ]
+      'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)',
+      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone]
     );
 
     await connection.end();
@@ -36,21 +32,23 @@ class Usuario {
   }
 
   static async editar(id, usuario) {
+    const senhaHash = await bcrypt.hash(usuario.senha, 10);
+
     const connection = await mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "41491912",
-      database: "epampa",
+      host: 'localhost',
+      user: 'root',
+      password: '41491912',
+      database: 'epampa',
     });
 
     const [editedRows, editedFields] = await connection.execute(
-      "UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=? WHERE id=?",
+      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=? WHERE id=?',
       [
         usuario.nome,
         usuario.cpf,
         usuario.endereco,
         usuario.email,
-        usuario.senha,
+        senhaHash,
         usuario.telefone,
         Number.parseInt(id),
       ]

@@ -1,5 +1,6 @@
 const mysql = require("mysql2/promise");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 class Empresa {
   constructor(nome, cnpj, ramo, email, senha, telefone) {
     this.nome = nome;
@@ -11,6 +12,8 @@ class Empresa {
   }
 
   async adicionar() {
+    const senhaHash = await bcrypt.hash(this.senha, 10);
+
     const connection = await mysql.createConnection({
       host: "localhost",
       user: "root",
@@ -20,7 +23,7 @@ class Empresa {
 
     const [rows, fields] = await connection.execute(
       "INSERT INTO empresa (nome, cnpj, ramo, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)",
-      [this.nome, this.cnpj, this.ramo, this.email, this.senha, this.telefone]
+      [this.nome, this.cnpj, this.ramo, this.email, senhaHash, this.telefone]
     );
 
     await connection.end();
@@ -65,6 +68,8 @@ class Empresa {
   }
 
   static async editar(id, empresa) {
+    const senhaHash = await bcrypt.hash(this.senha, 10);
+
     const connection = await mysql.createConnection({
       host: "localhost",
       user: "root",
@@ -79,7 +84,7 @@ class Empresa {
         empresa.cnpj,
         empresa.ramo,
         empresa.email,
-        empresa.senha,
+        senhaHash,
         empresa.telefone,
         Number.parseInt(id),
       ]

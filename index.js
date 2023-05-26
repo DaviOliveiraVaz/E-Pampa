@@ -7,6 +7,8 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const bodyParser = require("body-parser");
 const connection = require("./config/database.js");
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
 const Produto = require("./model/Produto");
@@ -15,9 +17,34 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(session({
+  secret: 'lanche_do_mrbroa_eh_bom_demais',
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.get("/", function (req, res) {
-  res.render("login.ejs", {});
+  res.render("login_usuario.ejs", {});
+});
+
+app.get("/loginEmpresa", function (req, res) {
+  res.render("login_empresa.ejs", {});
+});
+
+app.get('/perfil', (req, res) => {
+  if (req.session.id_usuario) {
+    res.send('Bem-vindo ao seu perfil, ' + req.session.email);
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/perfilEmpresarial', (req, res) => {
+  if (req.session.id_empresa) {
+    res.send('Bem-vindo ao seu perfil, ' + req.session.email);
+  } else {
+    res.redirect('/loginEmpresa');
+  }
 });
 
 app.get("/loja", function (req, res) {
@@ -26,10 +53,6 @@ app.get("/loja", function (req, res) {
 
 app.get("/redefinir", function (req, res) {
   res.render("redefinicao.ejs", {});
-});
-
-app.get("/", function (req, res) {
-  res.render("index.ejs", {});
 });
 
 app.get("/cadastro", function (req, res) {
@@ -99,6 +122,58 @@ app.get("/excluirProduto/:id", async (req, res) => {
   }
   const deletedRows = await Produto.excluir(id);
   res.send(`Produto excluído com sucesso. ID: ${id}`);
+});
+
+app.post('/', (req, res) => {
+  const email = req.body.email;
+  const senha = req.body.senha;
+  const query = 'SELECT * FROM usuario WHERE email = ?';
+  connection.query(query, [email], async (error, results) => {
+    if (error) {
+      console.error('Erro ao consultar o banco de dados: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    if (results.length > 0) {
+      const senhaHash = results[0].senha;
+      const senhaCorreta = await bcrypt.compare(senha, senhaHash);
+      if (senhaCorreta) {
+        req.session.id_usuario = results[0].id;
+        req.session.email = results[0].email;
+        res.redirect('/perfil');
+      } else {
+        res.render('naoEncontrado.ejs');
+      }
+    } else {
+      res.render('naoEncontrado.ejs');
+    }
+  });
+});
+
+app.post('/loginEmpresa', (req, res) => {
+  const email = req.body.email;
+  const senha = req.body.senha;
+  const query = 'SELECT * FROM empresa WHERE email = ?';
+  connection.query(query, [email], async (error, results) => {
+    if (error) {
+      console.error('Erro ao consultar o banco de dados: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    if (results.length > 0) {
+      const senhaHash = results[0].senha;
+      const senhaCorreta = await bcrypt.compare(senha, senhaHash);
+      if (senhaCorreta) {
+        req.session.id_empresa = results[0].id;
+        req.session.email = results[0].email;
+        res.redirect('/perfilEmpresarial');
+      } else {
+        res.render('naoEncontrado.ejs');
+      }
+    } else {
+      res.render('naoEncontrado.ejs');
+    }
+  });
 });
 
 app.post("/cadastro", async (req, res) => {
