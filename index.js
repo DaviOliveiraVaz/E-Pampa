@@ -91,6 +91,7 @@ app.get("/editarEmpresa/:id", async (req, res) => {
   res.render("editarEmpresa.ejs", { empresa: empresaExistente[0] });
 });
 
+
 app.get("/excluirEmpresa/:id", async (req, res) => {
   const id = req.params.id;
   const empresaExistente = await Empresa.buscarPorId(id);
