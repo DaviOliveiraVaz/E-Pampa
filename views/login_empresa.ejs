@@ -4,28 +4,20 @@
 	<meta charset="UTF-8">
     <base href="/loginEmpresa">
 	<title>E-Pampa Login Empresa</title>
-	<link rel="stylesheet" href="/style.css">
+	<link rel="stylesheet" href="/style_login.css">
 </head>
 <body>
-	<h1>LOGIN EMPRESARIAL</h1>
-    <form method="post" action="/loginEmpresa" id="form">
-		<section>
-		  <div>
-			<p>E-MAIL</p>
-			<input type="email" name="email" placeholder="Digite seu email" id="atv" required>
-		  </div>
-		  <button type="reset" id="env">Apagar</button>
-		</section>
-	
-		<section>
-		  <div>
-			<p>SENHA</p>
-			<input type="text" name="senha" placeholder="Digite sua senha" id="atv" required>
-		  </div>
-		  <button type="submit" id="env">Enviar</button>
-		</section>
-	
-	  </form>
-	</main>
+    <div class="page">
+		<form method="POST" action="/loginEmpresa" class="formLogin">
+		  <h1>Login Empresarial</h1>
+		  <p>Digite os seus dados de acesso no campo abaixo.</p>
+		  <label for="email">E-mail</label>
+		  <input type="email" name="email" placeholder="Digite seu e-mail" autofocus="true" />
+		  <label for="senha">Senha</label>
+		  <input type="senha" name="senha" placeholder="Digite sua senha" />
+		  <a href="/empresa">Não possui uma conta?</a>
+		  <input type="submit" value="Acessar" class="btn" />
+		</form>
+	  </div>
 </body>
 </html>

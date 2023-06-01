@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-    <base href="/">
-	<title>E-Pampa Login</title>
-	<link rel="stylesheet" href="/style.css">
-</head>
-<body>
-	<h1>LOGIN</h1>
-    <form method="post" action="/" id="form">
-		<section>
-		  <div>
-			<p>E-MAIL</p>
-			<input type="email" name="email" placeholder="Digite seu email" id="atv" required>
-		  </div>
-		  <button type="reset" id="env">Apagar</button>
-		</section>
-	
-		<section>
-		  <div>
-			<p>SENHA</p>
-			<input type="text" name="senha" placeholder="Digite sua senha" id="atv" required>
-		  </div>
-		  <button type="submit" id="env">Enviar</button>
-		</section>
-	
-	  </form>
-	</main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <title>E-Pampa Login</title>
+    <link rel="stylesheet" href="/style_login.css" />
+  </head>
+  <body>
+    <div class="page">
+      <form method="POST" action="/login" class="formLogin">
+        <h1>Login</h1>
+        <p>Digite os seus dados de acesso no campo abaixo.</p>
+        <label for="email">E-mail</label>
+        <input type="email" name="email" placeholder="Digite seu e-mail" autofocus="true" />
+        <label for="senha">Senha</label>
+        <input type="senha" name="senha" placeholder="Digite sua senha" />
+        <a href="/cadastro">Não possui uma conta?</a>
+        <input type="submit" value="Acessar" class="btn" />
+      </form>
+    </div>
+  </body>
 </html>

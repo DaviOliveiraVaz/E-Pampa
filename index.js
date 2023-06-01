@@ -24,19 +24,34 @@ app.use(session({
 }));
 
 app.get("/", function (req, res) {
-  res.render("login_usuario.ejs", {});
+  res.render("tipo_login.ejs", {});
 });
 
-app.get("/loginEmpresa", function (req, res) {
-  res.render("login_empresa.ejs", {});
+app.get("/login", function (req, res) {
+  res.render("login_usuario.ejs", {});
 });
 
 app.get('/perfil', (req, res) => {
   if (req.session.id_usuario) {
     res.send('Bem-vindo ao seu perfil, ' + req.session.email);
   } else {
-    res.redirect('/');
+    res.redirect('/login');
   }
+});
+
+app.get('/sair', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Erro ao encerrar a sessão: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    res.redirect('/login');
+  });
+});
+
+app.get("/loginEmpresa", function (req, res) {
+  res.render("login_empresa.ejs", {});
 });
 
 app.get('/perfilEmpresarial', (req, res) => {
@@ -45,6 +60,17 @@ app.get('/perfilEmpresarial', (req, res) => {
   } else {
     res.redirect('/loginEmpresa');
   }
+});
+
+app.get('/sairEmpresa', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Erro ao encerrar a sessão: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    res.redirect('/loginEmpresa');
+  });
 });
 
 app.get("/loja", function (req, res) {
@@ -91,7 +117,6 @@ app.get("/editarEmpresa/:id", async (req, res) => {
   res.render("editarEmpresa.ejs", { empresa: empresaExistente[0] });
 });
 
-
 app.get("/excluirEmpresa/:id", async (req, res) => {
   const id = req.params.id;
   const empresaExistente = await Empresa.buscarPorId(id);
@@ -125,7 +150,7 @@ app.get("/excluirProduto/:id", async (req, res) => {
   res.send(`Produto excluído com sucesso. ID: ${id}`);
 });
 
-app.post('/', (req, res) => {
+app.post('/login', (req, res) => {
   const email = req.body.email;
   const senha = req.body.senha;
   const query = 'SELECT * FROM usuario WHERE email = ?';
@@ -148,6 +173,17 @@ app.post('/', (req, res) => {
     } else {
       res.render('naoEncontrado.ejs');
     }
+  });
+});
+
+app.post('/sair', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Erro ao encerrar a sessão: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    res.redirect('/');
   });
 });
 
@@ -174,6 +210,17 @@ app.post('/loginEmpresa', (req, res) => {
     } else {
       res.render('naoEncontrado.ejs');
     }
+  });
+});
+
+app.post('/sairEmpresa', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Erro ao encerrar a sessão: ', error);
+      res.sendStatus(500);
+      return;
+    }
+    res.redirect('/loginEmpresa');
   });
 });
 
