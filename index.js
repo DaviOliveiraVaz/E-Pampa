@@ -28,16 +28,20 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-  res.render("login_usuario.ejs", {});
+  res.render("login_usuario.ejs");
 });
 
-app.get('/perfil', (req, res) => {
+app.get('/perfil', async (req, res) => {
   if (req.session.id_usuario) {
-    res.send('Bem-vindo ao seu perfil, ' + req.session.email);
-  } else {
-    res.redirect('/login');
+  const id = req.session.id_usuario;
+  const usuarioExistente = await Usuario.buscarPorId(id);
+  if (!(usuarioExistente.length && usuarioExistente.length)) {
+    return res.status(404).render("naoEncontrado.ejs");
   }
-});
+  res.render("perfil.ejs", { usuario: usuarioExistente[0]});
+}else{
+  res.redirect("/login");
+}});
 
 app.get('/sair', (req, res) => {
   req.session.destroy((error) => {
@@ -54,13 +58,17 @@ app.get("/loginEmpresa", function (req, res) {
   res.render("login_empresa.ejs", {});
 });
 
-app.get('/perfilEmpresarial', (req, res) => {
+app.get('/perfilEmpresarial', async (req, res) => {
   if (req.session.id_empresa) {
-    res.send('Bem-vindo ao seu perfil, ' + req.session.email);
-  } else {
-    res.redirect('/loginEmpresa');
+  const id = req.session.id_empresa;
+  const empresaExistente = await Empresa.buscarPorId(id);
+  if (!(empresaExistente.length && empresaExistente.length)) {
+    return res.status(404).render("naoEncontrado.ejs");
   }
-});
+  res.render("perfil_empresarial.ejs", { empresa: empresaExistente[0]});
+}else{
+  res.redirect("/loginEmpresa");
+}});
 
 app.get('/sairEmpresa', (req, res) => {
   req.session.destroy((error) => {
@@ -85,15 +93,6 @@ app.get("/cadastro", function (req, res) {
   res.render("cadastro.ejs", {});
 });
 
-app.get("/editarUsuario/:id", async (req, res) => {
-  const id = req.params.id;
-  const usuarioExistente = await Usuario.buscarPorId(id);
-  if (!(usuarioExistente.length && usuarioExistente.length)) {
-    return res.status(404).render("naoEncontrado.ejs");
-  }
-  res.render("editarUsuario.ejs", { usuario: usuarioExistente[0] });
-});
-
 app.get("/excluirUsuario/:id", async (req, res) => {
   const id = req.params.id;
   const usuarioExistente = await Usuario.buscarPorId(id);
@@ -101,20 +100,11 @@ app.get("/excluirUsuario/:id", async (req, res) => {
     return res.status(404).send("Usuário não encontrado!");
   }
   const deletedRows = await Usuario.excluir(id);
-  res.send(`Usuario excluído com sucesso. ID: ${id}`);
+  res.redirect(`/login`);
 });
 
 app.get("/empresa", function (req, res) {
   res.render("empresa.ejs", {});
-});
-
-app.get("/editarEmpresa/:id", async (req, res) => {
-  const id = req.params.id;
-  const empresaExistente = await Empresa.buscarPorId(id);
-  if (!(empresaExistente && empresaExistente.length)) {
-    return res.status(404).render("naoEncontrado.ejs");
-  }
-  res.render("editarEmpresa.ejs", { empresa: empresaExistente[0] });
 });
 
 app.get("/excluirEmpresa/:id", async (req, res) => {
@@ -129,15 +119,6 @@ app.get("/excluirEmpresa/:id", async (req, res) => {
 
 app.get("/produto", function (req, res) {
   res.render("produto.ejs", {});
-});
-
-app.get("/editarProduto/:id", async (req, res) => {
-  const id = req.params.id;
-  const produtoExistente = await Produto.buscarPorId(id);
-  if (!(produtoExistente && produtoExistente.length)) {
-    return res.status(404).render("naoEncontrado.ejs");
-  }
-  res.render("editarProduto.ejs", { produto: produtoExistente[0] });
 });
 
 app.get("/excluirProduto/:id", async (req, res) => {
@@ -225,18 +206,20 @@ app.post('/sairEmpresa', (req, res) => {
 });
 
 app.post("/cadastro", async (req, res) => {
-  const { nome, cpf, endereco, email, senha, telefone } = req.body;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
+  const { nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre } = req.body;
+  const foto = req.file ? req.file.path : null;
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre, foto);
   const idInserido = await usuario.adicionar();
-  res.send(`Usuário cadastrado com sucesso. ID: ${idInserido}`);
+  res.redirect("/login");
 });
 
 app.post("/editarUsuario/:id", async (req, res) => {
   const id = req.params.id;
-  const { nome, cpf, endereco, email, senha, telefone } = req.body;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone);
+  const { nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre} = req.body;
+  const foto = req.file ? req.file.path : null;
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre, foto);
   const editedROws = await Usuario.editar(id, usuario);
-  res.send(`Usuário editado com sucesso. ID: ${id}`);
+  res.redirect(`/perfil`);
 });
 
 app.post("/empresa", async (req, res) => {
@@ -248,10 +231,11 @@ app.post("/empresa", async (req, res) => {
 
 app.post("/editarEmpresa/:id", async (req, res) => {
   const id = req.params.id;
-  const { nome, cnpj, ramo, email, senha, telefone } = req.body;
-  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone);
+  const { nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais } = req.body;
+  const foto = req.file ? req.file.path : null;
+  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais, foto);
   const editedROws = await Empresa.editar(id, empresa);
-  res.send(`Empresa editada com sucesso. ID: ${id}`);
+  res.redirect(`/perfilEmpresarial`);
 });
 
 app.post("/produto", upload.single("foto"), async (req, res) => {

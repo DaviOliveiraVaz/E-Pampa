@@ -1,98 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+html,
+body {
+  height: 100vh;
+}
 
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #023047;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #023047;
+  background-image: url(./pampa.jpg);
 }
 
 .page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    background-color: #31EB57;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #31eb57;
+  background-image: url(./pampa.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@keyframes moverDeCimaParaBaixo {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(0) scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .formLogin {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border-radius: 7px;
-    padding: 40px;
-    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
-    gap: 5px
+  margin: 50px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 7px;
+  padding: 40px;
+  box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
+  gap: 5px;
+  transition: transform 0.5s ease;
+  animation: moverDeCimaParaBaixo 1s forwards;
 }
 
 .areaLogin img {
-    width: 420px;
+  width: 420px;
 }
 
 .formLogin h1 {
-    padding: 0;
-    margin: 0;
-    font-weight: 500;
-    font-size: 2.3em;
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  font-size: 2em;
 }
 
 .formLogin p {
-    display: inline-block;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 25px;
+  display: inline-block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 25px;
 }
 
 .formLogin input {
-    padding: 15px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    margin-top: 5px;
-    border-radius: 4px;
-    transition: all linear 160ms;
-    outline: none;
+  padding: 15px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  transition: all linear 160ms;
+  outline: none;
 }
 
-
 .formLogin input:focus {
-    border: 1px solid #CEF533;
+  border: 1px solid #FFCB04;
 }
 
 .formLogin label {
-    font-size: 14px;
-    font-weight: 600;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .formLogin a {
-    display: inline-block;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: #555;
-    transition: all linear 160ms;
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #555;
+  transition: all linear 160ms;
 }
 
 .formLogin a:hover {
-    color: #CEF533;
+  color: #d2ca28;
 }
 
 .btn {
-    background-color: #EBE331;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    border: none !important;
-    transition: all linear 160ms;
-    cursor: pointer;
-    margin: 0 !important;
-
+  background-color: #FFCB04;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
 }
 
 .btn:hover {
-    transform: scale(1.05);
-    background-color: #CEF533;
+  transform: scale(1.05);
+  background-color: #d2ca28;
+}
 
+section#botoes {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.cadastro {
+  background-color: #FFCB04;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 1000;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.cadastro:hover {
+  transform: scale(1.05);
+  background-color: #d2ca28;
 }

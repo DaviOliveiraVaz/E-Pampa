@@ -1,0 +1,135 @@
+/*@font-face {
+  font-family: 'AllStar';
+  src: url('./CHLORINR.ttf') format('truetype');
+}*/
+
+html {
+  font-size: 62.5%;
+}
+
+.noscroll {
+  overflow: hidden;
+}
+
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+  color: #555555;
+  overflow: hidden !important;
+}
+
+img {
+  height: auto;
+}
+
+h2{
+  font-size: 3rem;
+  margin-bottom: 50px;
+  color: white;
+  /* color: #d2ca28; */
+  /* font-family: 'AllStar', sans-serif; */
+}
+
+.hpanel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+
+.leftpan {
+  left: -4%;
+  width: 60%;
+  -webkit-transform: skew(-8deg);
+  -moz-transform: skew(-8deg);
+  -o-transform: skew(-8deg);
+}
+
+.leftpan .background-img {
+  background-image: url(/gaucho4.jpg);
+  display: flex;
+  align-items: center;
+}
+
+.rightpan {
+  right: -4%;
+  width: 59%;
+  -webkit-transform: skew(8deg);
+  -moz-transform: skew(8deg);
+  -o-transform: skew(8deg);
+}
+
+.rightpan .background-img {
+  background-image: url(empresa.png);
+  display: flex;
+  align-items: center;
+}
+
+.background-img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.leftpan {
+    clip-path: polygon(0 0, 80% 0, 100% 100%, 0% 100%);
+}
+
+.rightpan {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.leftpan,
+.rightpan {
+    transition: transform 0.5s ease;
+}
+
+.leftpan .content-area {
+  -webkit-transform: skew(8deg);
+  -moz-transform: skew(8deg);
+  -o-transform: skew(8deg);
+}
+
+.rightpan .content-area {
+  -webkit-transform: skew(-8deg);
+  -moz-transform: skew(-8deg);
+  -o-transform: skew(-8deg);
+}
+
+.content-area {
+  text-align: center;
+  margin: 20vh auto;
+  width: 350px;
+}
+.content-area h2 {
+  font-size: 2.8rem;
+  margin-bottom: 50px;
+}
+
+.leftpan,
+.rightpan {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.leftpan:hover,
+.rightpan:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+  z-index: 99;
+  transform: scale(1.1) translateZ(20px);
+}
+
+.leftpan:hover {
+  transform: scale(1.1) translateZ(20px); /* Alterado de scale(1.01) para scale(1.1) */
+}

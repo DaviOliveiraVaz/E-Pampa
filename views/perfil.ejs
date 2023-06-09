@@ -1,0 +1,187 @@
+<link href="/style_perfil.css" rel="stylesheet">
+
+<body>
+  <div class="main-content">
+    <!-- Top navbar -->
+    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a href="/"><img src="/home.png" alt="home" height="40px"></a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfil">PERFIL DO USUÁRIO</a>
+        <!-- Form -->
+        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+          <div class="form-group mb-0">
+          </div>
+        </form>
+        <!-- User -->
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item dropdown">
+            <a class="nav-link pr-0" href="/perfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="media align-items-center">
+                <span class="avatar avatar-sm rounded-circle">
+                  <img alt="Image placeholder" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>">
+                </span>
+                <div class="media-body ml-2 d-none d-lg-block">
+                  <span class="mb-0 text-sm  font-weight-bold"><%= usuario.nome %></span>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-repeat: no-repeat; background-size: cover; background-image: url(/perfil.jpg);">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Olá, <%= usuario.nome %>!</h1>
+            <p class="text-white mt-0 mb-5">Essa é a sua página de perfil. Nela você poderá visualizar todas as suas informações e editá-las se necessário.</p>
+            <button class="btn btn-info" onclick="toggleInputs()">Editar perfil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+          <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                  <img src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>" class="rounded-circle">
+                </div>
+              </div>
+            </div>
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+              <div class="d-flex justify-content-between">
+                <a href="/sair" class="btn btn-sm btn-info mr-4" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a>
+                <a href="/excluirUsuario/<%= usuario.id %>" class="btn btn-sm btn-default float-right" onclick="return confirmarDelecao()">Deletar</a>
+              </div>
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+              <div class="row">
+                <div class="col">
+                  <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <h3>
+                    <%= usuario.nome %><span class="font-weight-light">, <%= usuario.cpf %></span>
+                </h3>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i><%= usuario.endereco %>
+                </div>
+                <hr class="my-4">
+                <p><%= usuario.sobre %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Minha conta</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form action="/editarUsuario/<%= usuario.id %>" onsubmit="alert('Usuário editado com sucesso!')" method="post">
+                <h6 class="heading-small text-muted mb-4">Informações do usuário</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group focused">
+                        <label class="form-control-label" for="input-username">Nome</label>
+                        <input type="text" name="nome" class="form-control form-control-alternative input-form" value="<%= usuario.nome %>" disabled>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-email">Email</label>
+                        <input type="email" name="email" class="form-control form-control-alternative input-form" value="<%= usuario.email %>" disabled>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">CPF</label>
+                      <input type="text" name="cpf" class="form-control form-control-alternative input-form" placeholder="CPF" value="<%= usuario.cpf %>" disabled>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Senha</label>
+                      <input type="text" name="senha" class="form-control form-control-alternative input-form" placeholder="Senha" value="<%= usuario.senha %>" disabled>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4">
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Informações de contato</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group focused">
+                        <label class="form-control-label" for="input-address">Endereço</label>
+                        <input name="endereco" class="form-control form-control-alternative input-form" placeholder="Endereço" value="<%= usuario.endereco %>" type="text" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group focused">
+                        <label class="form-control-label" for="input-city">Cidade</label>
+                        <input type="text" name="cidade" class="form-control form-control-alternative input-form" placeholder="Cidade" value="<%= usuario.cidade %>" disabled>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group focused">
+                        <label class="form-control-label" for="input-country">País</label>
+                        <input type="text" name="pais" class="form-control form-control-alternative input-form" placeholder="Pais" value="<%= usuario.pais %>" disabled>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-country">Telefone</label>
+                        <input type="text" name="telefone" class="form-control form-control-alternative input-form" placeholder="Telefone" value="<%= usuario.telefone %>" disabled>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4">
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">Sobre mim</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group focused">
+                    <label>Sobre mim</label>
+                    <textarea rows="4" name="sobre" class="form-control form-control-alternative input-form" placeholder="Uma breve descrição sobre você..." value="<%= usuario.sobre %>" disabled></textarea>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-sm btn-default float-right input-form" disabled>Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  function toggleInputs() {
+    var inputs = document.getElementsByClassName("input-form");
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].disabled = !inputs[i].disabled;
+    }
+  }
+
+  function confirmarDelecao() {
+  if (confirm('Tem certeza que deseja deletar a sua conta?')) {
+    alert('Conta deletada com sucesso');
+    return true;
+  }
+  return false;
+}
+</script>
+</body>

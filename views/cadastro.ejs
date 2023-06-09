@@ -1,71 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Usuário</title>
   <base href="/cadastro">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style_login.css">
 </head>
-
 <body>
-  <header>
-    <p id="cabecalho">
-      <a href="/">HOME</a>
-      <a href="cadastro" id="cadastro">CADASTRAR USUARIO</a>
-      <a href="empresa" id="empresa">CADASTRAR EMPRESA</a>
-    </p>
-  </header>
-
-  <main>
-    <h1>CADASTRO DE USUARIO</h1>
-    <form method="post" action="/cadastro" id="form">
-  
-      <section>
-        <div>
-          <p>NOME</p>
-          <input type="text" name="nome" placeholder="Digite o seu nome" id="atv" required>
-        </div>
-  
-        <div class="pai">
-          <div>
-            <p>CPF</p>
-            <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv" required>
-          </div>
-  
-          <div>
-            <p>ENDEREÇO</p>
-            <input type="text" name="endereco" placeholder="Digite o seu endereço" id="atv" required>
-          </div>
-        </div>
-        <button type="reset" id="env">Apagar</button>
-      </section>
-  
-      <section>
-        <div>
-          <p>E-MAIL</p>
-          <input type="email" name="email" placeholder="Digite o seu e-mail" id="atv" required>
-        </div>
-  
-        <div class="pai">
-          <div>
-            <p>SENHA</p>
-            <input type="text" name="senha" placeholder="Digite uma senha" id="atv" required>
-          </div>
-  
-          <div>
-            <p>TELEFONE</p>
-            <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" required>
-          </div>
-        </div>
-        <button type="submit" id="env">Enviar</button>
-      </section>
-  
+  <div class="page">
+    <form method="post" action="/cadastro" class="formLogin" onsubmit="alert('Usuário cadastrado com sucesso!')">
+      <h1>Cadastro de Usuário</h1>
+      <p>Digite os seus dados no campo abaixo.</p>
+          <label for="nome">Nome</label>
+          <input type="text" name="nome" placeholder="Digite o seu nome" autofocus="true" required>
+          <label for="cpf">CPF</label>
+          <input type="text" name="cpf" placeholder="Digite o seu cpf" required>
+          <label for="endereco">Endereco</label>
+          <input type="text" name="endereco" placeholder="Digite o seu endereço" required>
+          <label for="email">E-mail</label>
+          <input type="email" name="email" placeholder="Digite o seu e-mail" required>
+          <label for="senha">Senha</label>
+          <input type="text" name="senha" placeholder="Digite uma senha" required>
+          <label for="telefone">Telefone</label>
+          <input type="text" name="telefone" placeholder="Digite o seu telefone" required>
+          <section id="botoes">
+            <button type="reset" value="Acessar" class="cadastro">Apagar</button>
+            <button type="submit" value="Acessar" class="cadastro">Enviar</button>
+          </section>
     </form>
-  </main>
-  
+  </div>
 </body>
-
 </html>
