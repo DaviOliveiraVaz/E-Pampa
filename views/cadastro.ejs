@@ -18,7 +18,11 @@
           <label for="cpf">CPF</label>
           <input type="text" name="cpf" placeholder="Digite o seu cpf" required>
           <label for="endereco">Endereco</label>
-          <input type="text" name="endereco" placeholder="Digite o seu endereço" required>
+          <input type="text" name="endereco" id="enderecoInput" placeholder="Digite o seu endereço" required>
+          <label for="cidade">Cidade</label>
+          <input type="text" name="cidade" id="cidadeInput" placeholder="Digite a sua cidade" required>
+          <label for="pais">País</label>
+          <input type="text" name="pais" id="paisInput" placeholder="Digite o seu país" required>
           <label for="email">E-mail</label>
           <input type="email" name="email" placeholder="Digite o seu e-mail" required>
           <label for="senha">Senha</label>
@@ -31,5 +35,24 @@
           </section>
     </form>
   </div>
+  <!-- <script src="https://unpkg.com/cep-promise/dist/cep-promise.js"></script>
+  <script>
+    const cepInput = document.querySelector('#enderecoInput');
+    const cidadeInput = document.querySelector('#cidadeInput');
+    const paisInput = document.querySelector('#paisInput');
+
+    cepInput.addEventListener('change', function() {
+      const cep = cepInput.value;
+
+      window.cepPromise(cep)
+        .then(function(result) {
+          cidadeInput.value = result.city;
+          paisInput.value = result.state;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    });
+  </script> -->
 </body>
 </html>

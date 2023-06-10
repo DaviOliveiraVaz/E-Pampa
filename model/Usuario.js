@@ -39,8 +39,8 @@ class Usuario {
     });
 
     const [rows, fields] = await connection.execute(
-      'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.pais, this.sobre, this.foto]
+      'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.pais]
     );
 
     await connection.end();

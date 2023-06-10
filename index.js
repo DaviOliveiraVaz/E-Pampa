@@ -206,27 +206,26 @@ app.post('/sairEmpresa', (req, res) => {
 });
 
 app.post("/cadastro", async (req, res) => {
-  const { nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre } = req.body;
-  const foto = req.file ? req.file.path : null;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre, foto);
+  const { nome, cpf, endereco, email, senha, telefone, cidade, pais} = req.body;
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, cidade, pais);
   const idInserido = await usuario.adicionar();
   res.redirect("/login");
 });
 
-app.post("/editarUsuario/:id", async (req, res) => {
+app.post("/editarUsuario/:id", upload.single("foto"), async (req, res) => {
   const id = req.params.id;
-  const { nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre} = req.body;
+  const { nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre} = req.body;
   const foto = req.file ? req.file.path : null;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, descricao, cidade, pais, sobre, foto);
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre, foto);
   const editedROws = await Usuario.editar(id, usuario);
   res.redirect(`/perfil`);
 });
 
 app.post("/empresa", async (req, res) => {
-  const { nome, cnpj, ramo, email, senha, telefone } = req.body;
-  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone);
+  const { nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais } = req.body;
+  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais);
   const idInserido = await empresa.adicionar();
-  res.send(`Empresa cadastrada com sucesso. ID: ${idInserido}`);
+  res.redirect("/loginEmpresa");
 });
 
 app.post("/editarEmpresa/:id", async (req, res) => {
