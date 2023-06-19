@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <% dados.forEach(function(produto) { %>
+          <li>
+            <h3><%= produto.nome %></h3>
+            <p>Valor: <%= produto.valor %></p>
+            <p>Descrição: <%= produto.descricao %></p>
+            <p>Empresa: <%= produto.empresa %></p>
+            <p>Frete: <%= produto.frete %></p>
+            <img src="<%= produto.foto %>" alt="Foto do produto">
+          </li>
+        <% }) %>
+      </ul>
+</body>
+</html>

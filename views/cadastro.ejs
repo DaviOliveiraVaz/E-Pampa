@@ -13,26 +13,60 @@
     <form method="post" action="/cadastro" class="formLogin" onsubmit="alert('Usuário cadastrado com sucesso!')">
       <h1>Cadastro de Usuário</h1>
       <p>Digite os seus dados no campo abaixo.</p>
-          <label for="nome">Nome</label>
-          <input type="text" name="nome" placeholder="Digite o seu nome" autofocus="true" required>
-          <label for="cpf">CPF</label>
-          <input type="text" name="cpf" placeholder="Digite o seu cpf" required>
-          <label for="endereco">Endereco</label>
-          <input type="text" name="endereco" id="enderecoInput" placeholder="Digite o seu endereço" required>
-          <label for="cidade">Cidade</label>
-          <input type="text" name="cidade" id="cidadeInput" placeholder="Digite a sua cidade" required>
-          <label for="pais">País</label>
-          <input type="text" name="pais" id="paisInput" placeholder="Digite o seu país" required>
-          <label for="email">E-mail</label>
-          <input type="email" name="email" placeholder="Digite o seu e-mail" required>
-          <label for="senha">Senha</label>
-          <input type="text" name="senha" placeholder="Digite uma senha" required>
-          <label for="telefone">Telefone</label>
-          <input type="text" name="telefone" placeholder="Digite o seu telefone" required>
-          <section id="botoes">
-            <button type="reset" value="Acessar" class="cadastro">Apagar</button>
-            <button type="submit" value="Acessar" class="cadastro">Enviar</button>
-          </section>
+        <section>
+          <div class="pai">
+            <div>
+              <label for="nome" id="atv">Nome</label>
+              <input type="text" name="nome" placeholder="Digite o seu nome" autofocus="true" id="atv" required>
+            </div>
+
+            <div>
+              <label for="cpf" id="atv">CPF</label>
+              <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv" required>
+            </div>
+          </div>
+
+         <div class="pai">
+            <div>
+              <label for="email" id="atv">E-mail</label>
+              <input type="email" name="email" placeholder="Digite o seu e-mail" id="atv" required>
+            </div>
+
+            <div>
+              <label for="senha" id="atv">Senha</label>
+              <input type="password" name="senha" placeholder="Digite uma senha" id="atv" required>
+            </div>
+          </div>
+
+          <div class="pai">
+            <div>
+              <label for="telefone" id="atv">Telefone</label>
+              <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" required>
+            </div>
+
+            <div>
+              <label for="endereco" id="atv">Endereco</label>
+              <input type="text" name="endereco" id="enderecoInput atv" placeholder="Digite o seu endereço" required>
+            </div>
+          </div>
+
+          <div class="pai">
+            <div>
+              <label for="cidade" id="atv">Cidade</label>
+              <input type="text" name="cidade" id="cidadeInput atv" placeholder="Digite a sua cidade" required>
+            </div>
+
+            <div>
+              <label for="pais" id="atv">País</label>
+            <input type="text" name="pais" id="paisInput atv" placeholder="Digite o seu país" required>
+            </div>
+          </div>
+        </section>
+
+        <section id="botoes">
+          <button type="reset" value="Acessar" class="cadastro">Apagar</button>
+          <button type="submit" value="Acessar" class="cadastro" id="env">Enviar</button>
+        </section>
     </form>
   </div>
   <!-- <script src="https://unpkg.com/cep-promise/dist/cep-promise.js"></script>

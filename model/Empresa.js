@@ -29,26 +29,6 @@ class Empresa {
     this.foto = foto;
   }
 
-  // async adicionar() {
-  //   const senhaHash = await bcrypt.hash(this.senha, 10);
-
-  //   const connection = await mysql.createConnection({
-  //     host: "localhost",
-  //     user: "root",
-  //     password: "41491912",
-  //     database: "epampa",
-  //   });
-
-  //   const [rows, fields] = await connection.execute(
-  //     "INSERT INTO empresa (nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-  //     [this.nome, this.cnpj, this.ramo, this.email, senhaHash, this.telefone, this.endereco, this.cidade, this.pais]
-  //   );
- 
-  //   await connection.end();
-
-  //   return rows.insertId;
-  // }
-
   async adicionar() {
     const senhaHash = await bcrypt.hash(this.senha, 10);
 
@@ -128,7 +108,7 @@ class Empresa {
     });
 
     const [editedRows, editedFields] = await connection.execute(
-      "UPDATE empresa SET nome=?, cnpj=?, ramo=?, email=?, senha=?, telefone=?, descricao=?, endereco=?, cidade=?, pais=?, foto=? WHERE id=?",
+      "UPDATE empresa SET nome=?, cnpj=?, ramo=?, email=?, senha=?, telefone=?, descricao=?, endereco=?, cidade=?, pais=? WHERE id=?",
       [
         empresa.nome,
         empresa.cnpj,
@@ -140,9 +120,26 @@ class Empresa {
         empresa.endereco,
         empresa.cidade,
         empresa.pais,
-        empresa.foto,
         Number.parseInt(id),
       ]
+    );
+
+    await connection.end();
+
+    return editedRows;
+  }
+
+  static async editarFoto(id, fotoData) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [editedRows, editedFields] = await connection.execute(
+      "UPDATE empresa SET foto=? WHERE id=?",
+      [fotoData, Number.parseInt(id)]
     );
 
     await connection.end();

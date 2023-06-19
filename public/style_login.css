@@ -22,7 +22,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: #31eb57;
-  background-image: url(./pampa.jpg);
+  background-image: url(./pampa2.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -139,9 +139,39 @@ section#botoes {
   transition: all linear 160ms;
   cursor: pointer;
   margin: 0 !important;
+  border-radius: 3px;
+  padding: 4px 0;
 }
 
 .cadastro:hover {
   transform: scale(1.05);
   background-color: #d2ca28;
+}
+
+#env {
+  background-color: #015a2e;
+}
+
+#opa {
+  border-color: #FFCB04;
+  background-color: #FFCB04;
+}
+
+#dale {
+  border-color: #015a2e;
+  background-color: #015a2e;
+}
+
+.pai {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+label {
+  display: flex;
+}
+
+#dalee{
+  width: 92%;
 }

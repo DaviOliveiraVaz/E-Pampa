@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 var path = require("path");
 const ejs = require("ejs");
+const fs = require("fs");
 const mysql = require("mysql2/promise");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
@@ -117,10 +118,6 @@ app.get("/excluirEmpresa/:id", async (req, res) => {
   res.send(`Empresa excluída com sucesso. ID: ${id}`);
 });
 
-app.get("/produto", function (req, res) {
-  res.render("produto.ejs", {});
-});
-
 app.get("/excluirProduto/:id", async (req, res) => {
   const id = req.params.id;
   const produtoExistente = await Produto.buscarPorId(id);
@@ -129,6 +126,16 @@ app.get("/excluirProduto/:id", async (req, res) => {
   }
   const deletedRows = await Produto.excluir(id);
   res.send(`Produto excluído com sucesso. ID: ${id}`);
+});
+
+app.get("/produtos", async (req, res) => {
+  try {
+    const produto = new Produto();
+    const dados = await produto.findAll(); // Método para recuperar todos os produtos do banco de dados
+    res.render('produtos.ejs', { dados: dados });
+  } catch (error) {
+    res.status(500).send('Ocorreu um erro: ' + error);
+  }
 });
 
 app.post('/login', (req, res) => {
@@ -231,9 +238,20 @@ app.post("/empresa", async (req, res) => {
 app.post("/editarEmpresa/:id", async (req, res) => {
   const id = req.params.id;
   const { nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais } = req.body;
-  const foto = req.file ? req.file.path : null;
-  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais, foto);
+  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais);
   const editedROws = await Empresa.editar(id, empresa);
+  res.redirect(`/perfilEmpresarial`);
+});
+
+app.post("/editarFotoEmpresa/:id", upload.single("foto"), async (req, res) => {
+  const id = req.params.id;
+  const fotoPath = req.file ? req.file.path : null;
+
+  if (fotoPath) {
+    const fotoData = fs.readFileSync(fotoPath);
+    const editedRows = await Empresa.editarFoto(id, fotoData);
+    fs.unlinkSync(fotoPath);
+  }
   res.redirect(`/perfilEmpresarial`);
 });
 
@@ -242,7 +260,7 @@ app.post("/produto", upload.single("foto"), async (req, res) => {
   const foto = req.file ? req.file.path : null;
   const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
   const idInserido = await produto.adicionar();
-  res.send(`Produto cadastrado com sucesso. ID: ${idInserido}`);
+  res.redirect(`/perfilEmpresarial`);
 });
 
 app.post("/editarProduto/:id", upload.single("foto"), async (req, res) => {

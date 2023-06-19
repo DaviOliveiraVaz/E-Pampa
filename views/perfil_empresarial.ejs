@@ -7,17 +7,20 @@
       <div class="container-fluid">
         <!-- Brand -->
         <a href="/"><img src="/home.png" alt="home" height="40px"></a>
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfilEmpresa">PERFIL DA EMPRESA</a>
+        <a href="/produtos"><img src="/produtos2.png" alt="home" height="40px"></a>
+        <!-- <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfilEmpresa">PERFIL DA EMPRESA</a> -->
         <!-- Form -->
-        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-          <div class="form-group mb-0">
-          </div>
-        </form>
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
             <a class="nav-link pr-0" href="/perfilEmpresa" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
+                <!-- <span class="avatar avatar-sm rounded-circle">
+                  <img alt="Image placeholder" src="/produtos2.png" height="40px">
+                </span>
+                <div class="media-body ml-2 d-none d-lg-block">
+                  <span class="mb-0 text-sm  font-weight-bold">Produtos</span>
+                </div> -->
                 <span class="avatar avatar-sm rounded-circle">
                   <img alt="Image placeholder" src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>">
                 </span>
@@ -41,6 +44,7 @@
             <h1 class="display-2 text-white">Olá, <%= empresa.nome %>!</h1>
             <p class="text-white mt-0 mb-5">Essa é a sua página de perfil. Nela você poderá visualizar todas as suas informações e editá-las se necessário.</p>
             <button class="btn btn-info" onclick="toggleInputs()">Editar perfil</button>
+            <button class="btn btn-info" onclick="toggleForms()">Cadastrar produtos</button>
           </div>
         </div>
       </div>
@@ -52,15 +56,21 @@
           <div class="card card-profile shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
+                <form id="form-foto" action="/editarFotoEmpresa/<%= empresa.id %>" enctype="multipart/form-data" method="post">
                 <div class="card-profile-image">
-                  <img src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>" class="rounded-circle">
+                  <!-- <img id="profile-image" src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
+                  <img id="profile-image" src="<%= empresa.foto ? '/uploads/' + empresa.foto : '/profile-icon.png' %>" class="rounded-circle">
+
+                  <input name="foto" id="image-input" type="file" style="display: none" onchange="changeProfileImage(event)">
+                  <button type="submit" style="display: none;"></button>
                 </div>
+              </form>
               </div>
             </div>
             <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
-                <a href="/sairEmpresa" class="btn btn-sm btn-info mr-4" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a>
-                <a href="/excluirEmpresa/<%= empresa.id %>" class="btn btn-sm btn-default float-right" onclick="return confirmarDelecao()">Deletar</a>
+                <a href="/sairEmpresa" class="btn btn-sm btn-info mr-4 dale" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a>
+                <a href="/excluirEmpresa/<%= empresa.id %>" class="btn btn-sm btn-default float-right opa" onclick="return confirmarDelecao()">Deletar</a>
               </div>
             </div>
             <div class="card-body pt-0 pt-md-4">
@@ -89,18 +99,60 @@
               <div class="row align-items-center">
                 <div class="col-8">
                   <h3 class="mb-0">Minha conta</h3>
+                  <!-- <h3 class="mb-0" id="form-produto">Cadastro de produto</h3> -->
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <form action="/editarEmpresa/<%= empresa.id %>" onsubmit="alert('Empresa editada com sucesso!')" method="post">
+              <form id="form-produto" action="/produto" onsubmit="alert('Produto cadastrado com sucesso!')" method="post" style="display: none;" enctype="multipart/form-data">
+                <h6 class="heading-small text-muted mb-4">Informações do produto</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group focused">
+                        <label class="form-control-label" for="input-username">Nome</label>
+                        <input type="text" name="nome" id="input-username" class="form-control form-control-alternative input-form" autofocus="true">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-email">Valor</label>
+                        <input type="number" name="valor" id="input-email" class="form-control form-control-alternative input-form" placeholder="Valor do produto">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Descrição</label>
+                      <input type="text" name="descricao" class="form-control form-control-alternative input-form input-form" placeholder="Descrição do produto">
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Frete</label>
+                      <input type="number" name="frete" class="form-control form-control-alternative input-form input-form" placeholder="Valor fixo do frete">
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Estoque</label>
+                      <input type="number" name="estoque" class="form-control form-control-alternative input-form input-form" placeholder="Quantidade em estoque">
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Foto</label>
+                      <input type="file" name="foto" class="form-control form-control-alternative input-form input-form" placeholder="Foto do produto">
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-control-label" for="input-country">Empresa</label>
+                      <input type="number" name="empresa" class="form-control form-control-alternative input-form input-form" placeholder="Empresa" value="<%= empresa.id %>">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-sm btn-default float-right input-form">Enviar</button>
+                </div>
+              </form>
+
+              <form id="form-perfil" action="/editarEmpresa/<%= empresa.id %>" onsubmit="alert('Empresa editada com sucesso!'); return enviarFormulario();" method="post">
                 <h6 class="heading-small text-muted mb-4">Informações da empresa</h6>
                 <div class="pl-lg-4">
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group focused">
                         <label class="form-control-label" for="input-username">Nome</label>
-                        <input type="text" name="nome" id="input-username" class="form-control form-control-alternative input-form" value="<%= empresa.nome %>" disabled>
+                        <input type="text" name="nome" id="input-username" class="form-control form-control-alternative input-form" value="<%= empresa.nome %>" autofocus="true" disabled>
                       </div>
                     </div>
                     <div class="col-lg-6">
@@ -115,12 +167,11 @@
                     </div>
                     <div class="col-lg-6">
                       <label class="form-control-label" for="input-country">Senha</label>
-                      <input type="text" name="senha" class="form-control form-control-alternative input-form input-form" placeholder="Senha" value="<%= empresa.senha %>" disabled>
+                      <input type="password" name="senha" class="form-control form-control-alternative input-form input-form" placeholder="Senha" value="<%= empresa.senha %>" disabled>
                     </div>
                   </div>
                 </div>
                 <hr class="my-4">
-                <!-- Address -->
                 <h6 class="heading-small text-muted mb-4">Informações de contato</h6>
                 <div class="pl-lg-4">
                   <div class="row">
@@ -153,7 +204,6 @@
                   </div>
                 </div>
                 <hr class="my-4">
-                <!-- Description -->
                 <h6 class="heading-small text-muted mb-4">Descrição da empresa</h6>
                 <div class="pl-lg-4">
                   <div class="form-group">
@@ -162,10 +212,10 @@
                   </div>
                   <div class="form-group focused">
                     <label>Sobre nós</label>
-                    <textarea rows="4" class="form-control form-control-alternative input-form" placeholder="Uma breve descrição sobre sua empresa..." value="<%= empresa.descricao %>" disabled></textarea>
+                    <textarea rows="4" name="descricao" class="form-control form-control-alternative input-form" placeholder="Uma breve descrição sobre sua empresa..." value="<%= empresa.descricao %>" disabled></textarea>
                   </div>
                 </div>
-                <button type="submit" name="descricao" class="btn btn-sm btn-default float-right input-form" disabled>Enviar</button>
+                <button type="submit" class="btn btn-sm btn-default float-right input-form" onsubmit="enviarFormulario()" disabled>Enviar</button>
             </div>
           </div>
         </div>
@@ -178,14 +228,66 @@
       for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = !inputs[i].disabled;
       }
+
+      var profileImage = document.getElementById("profile-image");
+      profileImage.onclick = function() {
+      document.getElementById("image-input").click();
+      };
+
+      var formProduto = document.querySelector("#form-produto");
+      var formPerfil = document.querySelector("#form-perfil");
+
+      formProduto.style.display = 'none';
+      formPerfil.style.display = 'block';
+    }
+
+    function toggleForms() {
+      var formProduto = document.querySelector("#form-produto");
+      var formPerfil = document.querySelector("#form-perfil");
+
+      formProduto.style.display = 'block';
+      formPerfil.style.display = 'none';
     }
 
     function confirmarDelecao() {
-    if (confirm('Tem certeza que deseja deletar a sua conta?')) {
-      alert('Conta deletada com sucesso');
-      return true;
+      if (confirm('Tem certeza que deseja deletar a sua conta?')) {
+        alert('Conta deletada com sucesso');
+        return true;
+      }
+      return false;
     }
-    return false;
-  }
+
+    function changeProfileImage(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+      var profileImage = document.getElementById("profile-image");
+      profileImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function enviarFormulario() {
+      const formFoto = document.getElementById('form-foto');
+      const formData = new FormData(formFoto);
+
+      // Enviar o primeiro formulário de foto assincronamente (usando AJAX)
+      const xhr = new XMLHttpRequest();
+      xhr.open(formFoto.method, formFoto.action);
+      xhr.onload = function() {
+      if (xhr.status === 200) {
+      document.getElementById('form-perfil').submit();
+      } else {
+      console.error('Erro ao enviar o primeiro formulário:', xhr.statusText);
+        }
+      };
+      xhr.onerror = function() {
+      console.error('Erro ao enviar o primeiro formulário:', xhr.statusText);
+      };
+      xhr.send(formData);
+
+      return false;
+    }
+
   </script>
 </body>

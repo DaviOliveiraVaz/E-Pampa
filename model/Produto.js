@@ -30,16 +30,18 @@ class Produto {
       database: "epampa",
     });
 
+    const valores = [
+      this.nome,
+      this.valor,
+      this.descricao,
+      this.empresa,
+      this.frete,
+      this.foto,
+    ].map((valor) => (typeof valor !== "undefined" ? valor : null));
+
     const [rows, fields] = await connection.execute(
       "INSERT INTO produto (nome, valor, descricao, empresa_id, frete, foto) VALUES (?, ?, ?, ?, ?, ?)",
-      [
-        this.nome,
-        this.valor,
-        this.descricao,
-        this.empresa,
-        this.frete,
-        this.foto,
-      ]
+      valores
     );
 
     await connection.end();
@@ -102,6 +104,23 @@ class Produto {
     const [rows, fields] = await connection.execute(
       "SELECT id FROM produto WHERE id = ?",
       [id]
+    );
+
+    await connection.end();
+
+    return rows;
+  }
+
+  async findAll() {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "SELECT * FROM produto",
     );
 
     await connection.end();
