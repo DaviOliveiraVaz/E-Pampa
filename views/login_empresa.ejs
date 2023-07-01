@@ -17,7 +17,32 @@
 		  <input type="password" name="senha" placeholder="Digite sua senha" required/>
 		  <a href="/empresa">Não possui uma conta?</a>
 		  <input type="submit" value="Acessar" class="btn" />
+		  <p id="mensagemErro" class="erro"></p>
 		</form>
 	  </div>
+
+	  <script>
+		const form = document.querySelector('.formLogin');
+		const mensagemErro = document.querySelector('#mensagemErro');
+
+		form.addEventListener('submit', async (event) => {
+		  event.preventDefault();
+		  const formData = new FormData(form);
+		  const response = await fetch('/login', {
+			method: 'POST',
+			body: formData
+		  });
+
+		  if (response.ok) {
+			window.location.href = '/perfil';
+		  } else if (response.status === 401) {
+			mensagemErro.textContent = 'Senha incorreta.';
+		  } else if (response.status === 404) {
+			mensagemErro.textContent = 'Cadastro não encontrado.';
+		  } else {
+			mensagemErro.textContent = 'Ocorreu um erro ao fazer login.';
+		  }
+		});
+	  </script>
 </body>
 </html>

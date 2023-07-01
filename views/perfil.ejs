@@ -19,7 +19,12 @@
             <a class="nav-link pr-0" href="/perfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>">
+                  <!-- <img alt="Image placeholder" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>"> -->
+                  <% if (usuario.foto === null) { %>
+                    <img src="/profile-icon.png" />
+                  <% } else { %>
+                    <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
+                  <% } %>
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                   <span class="mb-0 text-sm  font-weight-bold"><%= usuario.nome %></span>
@@ -52,9 +57,18 @@
           <div class="card card-profile shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
-                <div class="card-profile-image">
-                  <img src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>" class="rounded-circle">
-                </div>
+                <form id="form-foto" action="/editarFotoUsuario/<%= usuario.id %>" enctype="multipart/form-data" method="post">
+                  <div class="card-profile-image">
+                    <!-- <img id="profile-image" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
+                    <% if (usuario.foto === null) { %>
+                      <img src="/profile-icon.png" />
+                    <% } else { %>
+                      <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
+                    <% } %>
+                    <input name="foto" id="image-input" type="file" style="display: none" onchange="changeProfileImage(event)">
+                    <button type="submit" style="display: none;"></button>
+                  </div>
+                </form>
               </div>
             </div>
             <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
@@ -93,7 +107,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="/editarUsuario/<%= usuario.id %>" onsubmit="alert('Usuário editado com sucesso!')" method="post">
+              <form id="form-perfil" action="/editarUsuario/<%= usuario.id %>" onsubmit="alert('Usuário editado com sucesso!'); return enviarFormulario();" method="post">
                 <h6 class="heading-small text-muted mb-4">Informações do usuário</h6>
                 <div class="pl-lg-4">
                   <div class="row">
@@ -159,7 +173,7 @@
                     <textarea rows="4" name="sobre" class="form-control form-control-alternative input-form" placeholder="Uma breve descrição sobre você..." value="<%= usuario.sobre %>" disabled></textarea>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-sm btn-default float-right input-form" disabled>Enviar</button>
+                <button type="submit" class="btn btn-sm btn-default float-right input-form" onsubmit="enviarFormulario()" disabled>Enviar</button>
               </form>
             </div>
           </div>
@@ -173,6 +187,10 @@
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].disabled = !inputs[i].disabled;
     }
+    var profileImage = document.getElementById("profile-image");
+      profileImage.onclick = function() {
+      document.getElementById("image-input").click();
+    };
   }
 
   function confirmarDelecao() {
@@ -181,6 +199,38 @@
     return true;
   }
   return false;
-}
+  }
+
+  function changeProfileImage(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+      var profileImage = document.getElementById("profile-image");
+      profileImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function enviarFormulario() {
+      const formFoto = document.getElementById('form-foto');
+      const formData = new FormData(formFoto);
+
+      // Enviar o primeiro formulário de foto assincronamente (usando AJAX)
+      const xhr = new XMLHttpRequest();
+      xhr.open(formFoto.method, formFoto.action);
+      xhr.onload = function() {
+      if (xhr.status === 200) {
+      document.getElementById('form-perfil').submit();
+      } else {
+      console.error('Erro ao enviar o primeiro formulário:', xhr.statusText);
+        }
+      };
+      xhr.onerror = function() {
+      console.error('Erro ao enviar o primeiro formulário:', xhr.statusText);
+      };
+      xhr.send(formData);
+
+      return false;
+    }
 </script>
 </body>

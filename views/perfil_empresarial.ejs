@@ -6,23 +6,22 @@
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
         <!-- Brand -->
-        <a href="/"><img src="/home.png" alt="home" height="40px"></a>
-        <a href="/produtos"><img src="/produtos2.png" alt="home" height="40px"></a>
+        <a href="/produtos"><img src="/home.png" alt="home" height="40px"></a>
+        <a href="/meusProdutos"><img src="/produtos2.png" alt="home" height="40px"></a>
         <!-- <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfilEmpresa">PERFIL DA EMPRESA</a> -->
         <!-- Form -->
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
-            <a class="nav-link pr-0" href="/perfilEmpresa" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link pr-0" href="/perfilEmpresarial" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
-                <!-- <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="/produtos2.png" height="40px">
-                </span>
-                <div class="media-body ml-2 d-none d-lg-block">
-                  <span class="mb-0 text-sm  font-weight-bold">Produtos</span>
-                </div> -->
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>">
+                  <!-- <img src="data:image/jpeg;base64,<%- empresa.foto %>" /> -->
+                  <% if (empresa.foto === null) { %>
+                    <img src="/profile-icon.png" />
+                  <% } else { %>
+                    <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+                  <% } %>
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                   <span class="mb-0 text-sm  font-weight-bold"><%= empresa.nome %></span>
@@ -59,7 +58,17 @@
                 <form id="form-foto" action="/editarFotoEmpresa/<%= empresa.id %>" enctype="multipart/form-data" method="post">
                 <div class="card-profile-image">
                   <!-- <img id="profile-image" src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
-                  <img id="profile-image" src="<%= empresa.foto ? '/uploads/' + empresa.foto : '/profile-icon.png' %>" class="rounded-circle">
+                  <!-- <img id="profile-image" src="<%= empresa.foto ? '/uploads/' + empresa.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
+
+                  <!-- <img src="data:image/jpeg;base64,<%- empresa.foto %>" /> -->
+
+                  <!-- <img src="<%= empresa.foto ? 'data:image/jpeg;base64,' + empresa.foto.toString('base64') : '/profile-icon.png' %>" /> -->
+
+                  <% if (empresa.foto === null) { %>
+                    <img src="/profile-icon.png" />
+                  <% } else { %>
+                    <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+                  <% } %>
 
                   <input name="foto" id="image-input" type="file" style="display: none" onchange="changeProfileImage(event)">
                   <button type="submit" style="display: none;"></button>

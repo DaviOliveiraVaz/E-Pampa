@@ -175,3 +175,7 @@ label {
 #dalee{
   width: 92%;
 }
+
+#mensagemErro{
+  color: red;
+}

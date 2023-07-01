@@ -127,6 +127,24 @@ class Produto {
 
     return rows;
   }
+
+  async meusProdutos(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [rows, fields] = await connection.execute(
+      "SELECT * FROM produto where empresa_id = ?",
+      [id]
+    );
+
+    await connection.end();
+
+    return rows;
+  }
 }
 
 module.exports = Produto, upload;

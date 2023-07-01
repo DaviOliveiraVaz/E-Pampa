@@ -8,8 +8,8 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const bodyParser = require("body-parser");
 const connection = require("./config/database.js");
-const session = require('express-session');
-const bcrypt = require('bcrypt');
+const session = require("express-session");
+const bcrypt = require("bcrypt");
 const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
 const Produto = require("./model/Produto");
@@ -18,11 +18,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(session({
-  secret: 'lanche_do_mrbroa_eh_bom_demais',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: "lanche_do_mrbroa_eh_bom_demais",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.get("/", function (req, res) {
   res.render("tipo_login.ejs", {});
@@ -32,26 +34,34 @@ app.get("/login", function (req, res) {
   res.render("login_usuario.ejs");
 });
 
-app.get('/perfil', async (req, res) => {
+app.get("/perfil", async (req, res) => {
   if (req.session.id_usuario) {
-  const id = req.session.id_usuario;
-  const usuarioExistente = await Usuario.buscarPorId(id);
-  if (!(usuarioExistente.length && usuarioExistente.length)) {
-    return res.status(404).render("naoEncontrado.ejs");
-  }
-  res.render("perfil.ejs", { usuario: usuarioExistente[0]});
-}else{
-  res.redirect("/login");
-}});
+    const id = req.session.id_usuario;
+    const usuarioExistente = await Usuario.buscarPorId(id);
+    if (!(usuarioExistente.length && usuarioExistente.length)) {
+      return res.status(404).json({ mensagem: "Cadastro não encontrado." });
+    }
+    const foto = Buffer.from(usuarioExistente[0].foto).toString("base64");
 
-app.get('/sair', (req, res) => {
+    res.render("perfil.ejs", {
+      usuario: {
+        ...usuarioExistente[0],
+        foto: foto,
+      },
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/sair", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      console.error('Erro ao encerrar a sessão: ', error);
+      console.error("Erro ao encerrar a sessão: ", error);
       res.sendStatus(500);
       return;
     }
-    res.redirect('/login');
+    res.redirect("/login");
   });
 });
 
@@ -59,26 +69,35 @@ app.get("/loginEmpresa", function (req, res) {
   res.render("login_empresa.ejs", {});
 });
 
-app.get('/perfilEmpresarial', async (req, res) => {
+app.get("/perfilEmpresarial", async (req, res) => {
   if (req.session.id_empresa) {
-  const id = req.session.id_empresa;
-  const empresaExistente = await Empresa.buscarPorId(id);
-  if (!(empresaExistente.length && empresaExistente.length)) {
-    return res.status(404).render("naoEncontrado.ejs");
-  }
-  res.render("perfil_empresarial.ejs", { empresa: empresaExistente[0]});
-}else{
-  res.redirect("/loginEmpresa");
-}});
+    const id = req.session.id_empresa;
+    const empresaExistente = await Empresa.buscarPorId(id);
+    if (!(empresaExistente.length && empresaExistente.length)) {
+      return res.status(404).json({ mensagem: "Cadastro não encontrado." });
+    }
 
-app.get('/sairEmpresa', (req, res) => {
+    const foto = Buffer.from(empresaExistente[0].foto).toString("base64");
+
+    res.render("perfil_empresarial.ejs", {
+      empresa: {
+        ...empresaExistente[0],
+        foto: foto,
+      },
+    });
+  } else {
+    res.redirect("/loginEmpresa");
+  }
+});
+
+app.get("/sairEmpresa", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      console.error('Erro ao encerrar a sessão: ', error);
+      console.error("Erro ao encerrar a sessão: ", error);
       res.sendStatus(500);
       return;
     }
-    res.redirect('/loginEmpresa');
+    res.redirect("/loginEmpresa");
   });
 });
 
@@ -131,21 +150,40 @@ app.get("/excluirProduto/:id", async (req, res) => {
 app.get("/produtos", async (req, res) => {
   try {
     const produto = new Produto();
-    const dados = await produto.findAll(); // Método para recuperar todos os produtos do banco de dados
-    res.render('produtos.ejs', { dados: dados });
+    let dados = await produto.findAll();
+    dados = dados.map(function (produto) {
+      produto.foto = Buffer.from(produto.foto).toString("base64");
+      return produto;
+    });
+    res.render("produtos.ejs", { dados: dados });
   } catch (error) {
-    res.status(500).send('Ocorreu um erro: ' + error);
+    res.status(500).send("Ocorreu um erro: " + error);
   }
 });
 
-app.post('/login', (req, res) => {
+app.get("/meusProdutos", async (req, res) => {
+  try {
+      const id = req.session.id_empresa;
+      const produto = new Produto();
+      let dados = await produto.meusProdutos(id);
+      dados = dados.map(function (produto) {
+        produto.foto = Buffer.from(produto.foto).toString("base64");
+        return produto;
+      });
+      res.render("meusProdutos.ejs", { dados: dados });
+  }   catch (error) {
+      res.status(500).send("Ocorreu um erro: " + error);
+    }
+});
+
+app.post("/login", (req, res) => {
   const email = req.body.email;
   const senha = req.body.senha;
-  const query = 'SELECT * FROM usuario WHERE email = ?';
+  const query = "SELECT * FROM usuario WHERE email = ?";
   connection.query(query, [email], async (error, results) => {
     if (error) {
-      console.error('Erro ao consultar o banco de dados: ', error);
-      res.sendStatus(500);
+      console.error("Erro ao consultar o banco de dados: ", error);
+      res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
       return;
     }
     if (results.length > 0) {
@@ -154,35 +192,35 @@ app.post('/login', (req, res) => {
       if (senhaCorreta) {
         req.session.id_usuario = results[0].id;
         req.session.email = results[0].email;
-        res.redirect('/perfil');
+        res.redirect("/perfil");
       } else {
-        res.render('naoEncontrado.ejs');
+        res.status(401).json({ mensagem: "Senha incorreta." });
       }
     } else {
-      res.render('naoEncontrado.ejs');
+      res.status(404).json({ mensagem: "Cadastro não encontrado." });
     }
   });
 });
 
-app.post('/sair', (req, res) => {
+app.post("/sair", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      console.error('Erro ao encerrar a sessão: ', error);
+      console.error("Erro ao encerrar a sessão: ", error);
       res.sendStatus(500);
       return;
     }
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
-app.post('/loginEmpresa', (req, res) => {
+app.post("/loginEmpresa", (req, res) => {
   const email = req.body.email;
   const senha = req.body.senha;
-  const query = 'SELECT * FROM empresa WHERE email = ?';
+  const query = "SELECT * FROM empresa WHERE email = ?";
   connection.query(query, [email], async (error, results) => {
     if (error) {
-      console.error('Erro ao consultar o banco de dados: ', error);
-      res.sendStatus(500);
+      console.error("Erro ao consultar o banco de dados: ", error);
+      res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
       return;
     }
     if (results.length > 0) {
@@ -191,54 +229,119 @@ app.post('/loginEmpresa', (req, res) => {
       if (senhaCorreta) {
         req.session.id_empresa = results[0].id;
         req.session.email = results[0].email;
-        res.redirect('/perfilEmpresarial');
+        res.redirect("/perfilEmpresarial");
       } else {
-        res.render('naoEncontrado.ejs');
+        res.status(401).json({ mensagem: "Senha incorreta." });
       }
     } else {
-      res.render('naoEncontrado.ejs');
+      res.status(404).json({ mensagem: "Cadastro não encontrado." });
     }
   });
 });
 
-app.post('/sairEmpresa', (req, res) => {
+app.post("/sairEmpresa", (req, res) => {
   req.session.destroy((error) => {
     if (error) {
-      console.error('Erro ao encerrar a sessão: ', error);
+      console.error("Erro ao encerrar a sessão: ", error);
       res.sendStatus(500);
       return;
     }
-    res.redirect('/loginEmpresa');
+    res.redirect("/loginEmpresa");
   });
 });
 
 app.post("/cadastro", async (req, res) => {
-  const { nome, cpf, endereco, email, senha, telefone, cidade, pais} = req.body;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, cidade, pais);
+  const { nome, cpf, endereco, email, senha, telefone, cidade, pais } =
+    req.body;
+  const usuario = new Usuario(
+    nome,
+    cpf,
+    endereco,
+    email,
+    senha,
+    telefone,
+    cidade,
+    pais
+  );
   const idInserido = await usuario.adicionar();
   res.redirect("/login");
 });
 
-app.post("/editarUsuario/:id", upload.single("foto"), async (req, res) => {
+app.post("/editarUsuario/:id", async (req, res) => {
   const id = req.params.id;
-  const { nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre} = req.body;
-  const foto = req.file ? req.file.path : null;
-  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre, foto);
+  const { nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre } =
+    req.body;
+  const usuario = new Usuario(
+    nome,
+    cpf,
+    endereco,
+    email,
+    senha,
+    telefone,
+    cidade,
+    pais,
+    sobre
+  );
   const editedROws = await Usuario.editar(id, usuario);
   res.redirect(`/perfil`);
 });
 
+app.post("/editarFotoUsuario/:id", upload.single("foto"), async (req, res) => {
+  const id = req.params.id;
+  const fotoPath = req.file ? req.file.path : null;
+
+  if (fotoPath) {
+    const fotoData = fs.readFileSync(fotoPath);
+    const editedRows = await Usuario.editarFoto(id, fotoData);
+    fs.unlinkSync(fotoPath);
+  }
+  res.redirect(`/perfil`);
+});
+
 app.post("/empresa", async (req, res) => {
-  const { nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais } = req.body;
-  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais);
+  const { nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais } =
+    req.body;
+  const empresa = new Empresa(
+    nome,
+    cnpj,
+    ramo,
+    email,
+    senha,
+    telefone,
+    endereco,
+    cidade,
+    pais
+  );
   const idInserido = await empresa.adicionar();
   res.redirect("/loginEmpresa");
 });
 
 app.post("/editarEmpresa/:id", async (req, res) => {
   const id = req.params.id;
-  const { nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais } = req.body;
-  const empresa = new Empresa(nome, cnpj, ramo, email, senha, telefone, descricao, endereco, cidade, pais);
+  const {
+    nome,
+    cnpj,
+    ramo,
+    email,
+    senha,
+    telefone,
+    descricao,
+    endereco,
+    cidade,
+    pais,
+  } = req.body;
+  const empresa = new Empresa(
+    nome,
+    cnpj,
+    ramo,
+    email,
+    senha,
+    telefone,
+    descricao,
+    endereco,
+    cidade,
+    pais
+  );
   const editedROws = await Empresa.editar(id, empresa);
   res.redirect(`/perfilEmpresarial`);
 });
@@ -257,8 +360,14 @@ app.post("/editarFotoEmpresa/:id", upload.single("foto"), async (req, res) => {
 
 app.post("/produto", upload.single("foto"), async (req, res) => {
   const { nome, valor, descricao, empresa, frete } = req.body;
-  const foto = req.file ? req.file.path : null;
-  const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
+
+  const fotoPath = req.file ? req.file.path : null;
+  let fotoData = null;
+  if (fotoPath) {
+    fotoData = fs.readFileSync(fotoPath);
+    fs.unlinkSync(fotoPath);
+  }
+  const produto = new Produto(nome, valor, descricao, empresa, frete, fotoData);
   const idInserido = await produto.adicionar();
   res.redirect(`/perfilEmpresarial`);
 });

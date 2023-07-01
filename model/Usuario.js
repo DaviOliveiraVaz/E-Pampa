@@ -49,7 +49,6 @@ class Usuario {
   }
 
   static async editar(id, usuario) {
-    // const senhaHash = await bcrypt.hash(usuario.senha, 10);
     const senhaHash = usuario.senha ? await bcrypt.hash(usuario.senha, 10) : null;
 
     const connection = await mysql.createConnection({
@@ -60,7 +59,7 @@ class Usuario {
     });
 
     const [editedRows, editedFields] = await connection.execute(
-      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=?, cidade=?, pais=?, sobre=?, foto=? WHERE id=?',
+      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=?, cidade=?, pais=?, sobre=? WHERE id=?',
       [
         usuario.nome,
         usuario.cpf,
@@ -71,7 +70,6 @@ class Usuario {
         usuario.cidade,
         usuario.pais,
         usuario.sobre,
-        usuario.foto,
         Number.parseInt(id),
       ]
     );
@@ -115,6 +113,24 @@ class Usuario {
     await connection.end();
 
     return deletedRows;
+  }
+
+  static async editarFoto(id, fotoData) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+
+    const [editedRows, editedFields] = await connection.execute(
+      "UPDATE usuario SET foto=? WHERE id=?",
+      [fotoData, Number.parseInt(id)]
+    );
+
+    await connection.end();
+
+    return editedRows;
   }
 }
 
