@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -45,4 +45,58 @@
 		});
 	  </script>
 </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/loginEmpresa" />
+    <title>E-Pampa Login Empresa</title>
+    <link rel="stylesheet" href="/style_login.css" />
+  </head>
+  <body>
+    <div class="page">
+      <form method="POST" action="/loginEmpresa" class="formLogin">
+        <h1>Login Empresarial</h1>
+        <p>Digite os seus dados de acesso no campo abaixo.</p>
+        <label for="email">E-mail</label>
+        <input type="email" name="email" placeholder="Digite seu e-mail" autofocus="true" required />
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" placeholder="Digite sua senha" required />
+        <a href="/empresa">Não possui uma conta?</a>
+        <input type="submit" value="Acessar" class="btn" />
+        <p id="mensagemErro" class="erro"></p>
+      </form>
+    </div>
+
+    <script>
+      const form = document.querySelector('.formLogin');
+      const mensagemErro = document.querySelector('#mensagemErro');
+    
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new URLSearchParams(new FormData(form)); // Serialize form data
+        console.log(formData.toString());
+        const response = await fetch('/loginEmpresa', {
+          method: 'POST',
+          body: formData.toString(), // Pass serialized form data as string
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' // Set the content type header
+          }
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          window.location.href = data.redirectUrl;
+        } else if (response.status === 401) {
+          window.location.href = '/login?erro=senha';
+        } else if (response.status === 404) {
+          window.location.href = '/login?erro=cadastro';
+        } else {
+          mensagemErro.textContent = 'Ocorreu um erro ao fazer login.';
+        }
+      });
+    </script>
+    
+  </body>
 </html>

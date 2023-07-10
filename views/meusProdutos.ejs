@@ -15,8 +15,30 @@
             <p>Empresa: <%= produto.empresa %></p>
             <p>Frete: <%= produto.frete %></p>
             <img src="data:image/jpeg;base64,<%- produto.foto %>" />
+            <a href="/editarProduto/<%= produto.id %>" class="btn-editar">Editar</a>
+            <button class="btn-excluir" data-produto-id="<%= produto.id %>">Excluir</button>
           </li>
         <% }) %>
       </ul>
 </body>
+<script>
+  const btnExcluirElements = document.querySelectorAll('.btn-excluir');
+
+  btnExcluirElements.forEach(btnExcluir => {
+    btnExcluir.addEventListener('click', () => {
+      const produtoId = btnExcluir.getAttribute('data-produto-id');
+      fetch(`/excluir-produto/${produtoId}`, { method: 'DELETE' })
+        .then(response => {
+          if (response.ok) {
+            location.reload();
+          } else {
+            console.error('Erro ao excluir o produto');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao excluir o produto', error);
+        });
+    });
+  });
+</script>
 </html>

@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/style_produtos.css">
+    <title>E-PAMPA</title>
 </head>
 <body>
+  <main class="produtos">
     <ul>
         <% dados.forEach(function(produto) { %>
           <li>
@@ -17,6 +19,7 @@
             <img src="data:image/jpeg;base64,<%- produto.foto %>" />
           </li>
         <% }) %>
-      </ul>
+    </ul>
+  </main>
 </body>
 </html>

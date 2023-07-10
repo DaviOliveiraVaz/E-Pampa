@@ -14,10 +14,10 @@ const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
 const Produto = require("./model/Produto");
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "lanche_do_mrbroa_eh_bom_demais",
@@ -186,18 +186,21 @@ app.post("/login", (req, res) => {
       res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
       return;
     }
-    if (results.length > 0) {
-      const senhaHash = results[0].senha;
-      const senhaCorreta = await bcrypt.compare(senha, senhaHash);
-      if (senhaCorreta) {
-        req.session.id_usuario = results[0].id;
-        req.session.email = results[0].email;
-        res.redirect("/perfil");
-      } else {
-        res.status(401).json({ mensagem: "Senha incorreta." });
-      }
+
+    if (results.length === 0) {
+      res.json({ redirectUrl: "/login?erro=cadastro" });
+      return;
+    }
+
+    const senhaHash = results[0].senha;
+    const senhaCorreta = await bcrypt.compare(senha, senhaHash);
+
+    if (senhaCorreta) {
+      req.session.id_usuario = results[0].id;
+      req.session.email = results[0].email;
+      res.json({ redirectUrl: "/perfil" });
     } else {
-      res.status(404).json({ mensagem: "Cadastro não encontrado." });
+      res.json({ redirectUrl: "/login?erro=senha" });
     }
   });
 });
@@ -223,18 +226,20 @@ app.post("/loginEmpresa", (req, res) => {
       res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
       return;
     }
-    if (results.length > 0) {
-      const senhaHash = results[0].senha;
-      const senhaCorreta = await bcrypt.compare(senha, senhaHash);
-      if (senhaCorreta) {
-        req.session.id_empresa = results[0].id;
-        req.session.email = results[0].email;
-        res.redirect("/perfilEmpresarial");
-      } else {
-        res.status(401).json({ mensagem: "Senha incorreta." });
-      }
+    if (results.length === 0) {
+      res.json({ redirectUrl: "/loginEmpresa?erro=cadastro" });
+      return;
+    }
+
+    const senhaHash = results[0].senha;
+    const senhaCorreta = await bcrypt.compare(senha, senhaHash);
+
+    if (senhaCorreta) {
+      req.session.id_empresa = results[0].id;
+      req.session.email = results[0].email;
+      res.json({ redirectUrl: "/perfilEmpresarial" });
     } else {
-      res.status(404).json({ mensagem: "Cadastro não encontrado." });
+      res.json({ redirectUrl: "/loginEmpresa?erro=senha" });
     }
   });
 });
@@ -373,12 +378,17 @@ app.post("/produto", upload.single("foto"), async (req, res) => {
 });
 
 app.post("/editarProduto/:id", upload.single("foto"), async (req, res) => {
-  const id = req.params.id;
   const { nome, valor, descricao, empresa, frete } = req.body;
-  const foto = req.file ? req.file.path : null;
-  const produto = new Produto(nome, valor, descricao, empresa, frete, foto);
-  const editedROws = await Produto.editar(id, produto);
-  res.send(`Produto editado com sucesso. ID: ${id}`);
+
+  const fotoPath = req.file ? req.file.path : null;
+  let fotoData = null;
+  if (fotoPath) {
+    fotoData = fs.readFileSync(fotoPath);
+    fs.unlinkSync(fotoPath);
+  }
+  const produto = new Produto(nome, valor, descricao, empresa, frete, fotoData);
+  const editedROws = await produto.editar(id, produto);
+  res.redirect(`/meusProdutos`);
 });
 
 app.listen("3000", function () {
