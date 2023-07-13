@@ -13,9 +13,7 @@
 <body>
   <header>
     <p id="cabecalho">
-      <a href="/">HOME</a>
-      <a href="cadastro" id="cadastro">CADASTRAR USUARIO</a>
-      <a href="empresa" id="empresa">CADASTRAR EMPRESA</a>
+      <a href="/meusProdutos">PRODUTOS</a>
     </p>
   </header>
 
@@ -31,12 +29,12 @@
         <div class="pai">
           <div>
             <p>VALOR</p>
-            <input type="text" name="valor" placeholder="Digite o valor do produto" id="atv" value="<%= produto.cpf %>">
+            <input type="text" name="valor" placeholder="Digite o valor do produto" id="atv" value="<%= produto.valor %>">
           </div>
   
           <div>
             <p>DESCRIÇÃO</p>
-            <input type="text" name="descricao" placeholder="Digite a descrição do produto" id="atv" value="<%= produto.endereco %>">
+            <input type="text" name="descricao" placeholder="Digite a descrição do produto" id="atv" value="<%= produto.descricao %>">
           </div>
         </div>
         <button type="reset" id="env">Apagar</button>
@@ -45,18 +43,18 @@
       <section>
         <div>
           <p>EMPRESA</p>
-          <input type="text" name="empresa" placeholder="Digite a sua empresa" id="atv" value="<%= produto.email %>">
+          <input type="text" name="empresa_id" placeholder="Digite a sua empresa" id="atv" value="<%= produto.empresa_id %>">
         </div>
   
         <div class="pai">
           <div>
             <p>FRETE</p>
-            <input type="text" name="frete" placeholder="Digite o frete do produto" id="atv" value="<%= produto.senha %>">
+            <input type="text" name="frete" placeholder="Digite o frete do produto" id="atv" value="<%= produto.frete %>">
           </div>
   
           <div>
             <p>FOTO</p>
-            <input type="file" name="foto" placeholder="Informe uma foto do produto" id="atv" value="<%= produto.telefone %>"> 
+            <input type="file" name="foto" placeholder="Informe uma foto do produto" id="atv" value="<%= produto.foto %>"> 
           </div>
         </div>
         <button type="submit" id="env" class="editar">Enviar</button>

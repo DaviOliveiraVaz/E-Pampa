@@ -3,42 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="/style_produtos.css" rel="stylesheet">
+    <title>Meus Produtos</title>
 </head>
 <body>
+  <header class="cabecalho">
+    <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer">
+    <nav class="menu-navegacao">
+      <ul>
+        <li><a href="/produtos">Home</a></li>
+        <li><a href="/perfilEmpresarial">Perfil</a></li>
+        <li><a href="/meusProdutos">Meus Produtos</a></li>
+        <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
     <ul>
         <% dados.forEach(function(produto) { %>
           <li>
             <h3><%= produto.nome %></h3>
             <p>Valor: <%= produto.valor %></p>
             <p>Descrição: <%= produto.descricao %></p>
-            <p>Empresa: <%= produto.empresa %></p>
+            <p>Empresa: <%= produto.empresa_id %></p>
             <p>Frete: <%= produto.frete %></p>
-            <img src="data:image/jpeg;base64,<%- produto.foto %>" />
+            <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px"/>
             <a href="/editarProduto/<%= produto.id %>" class="btn-editar">Editar</a>
-            <button class="btn-excluir" data-produto-id="<%= produto.id %>">Excluir</button>
+            <a href="/excluirProduto/<%= produto.id %>" onclick="return confirm('Tem certeza que deseja excluir esse produto?')">Excluir</a>
           </li>
         <% }) %>
       </ul>
+  </main>
 </body>
 <script>
-  const btnExcluirElements = document.querySelectorAll('.btn-excluir');
+  const menuHamburguer = document.querySelector('.menu-hamburguer');
+  const menuNavegacao = document.querySelector('.menu-navegacao');
 
-  btnExcluirElements.forEach(btnExcluir => {
-    btnExcluir.addEventListener('click', () => {
-      const produtoId = btnExcluir.getAttribute('data-produto-id');
-      fetch(`/excluir-produto/${produtoId}`, { method: 'DELETE' })
-        .then(response => {
-          if (response.ok) {
-            location.reload();
-          } else {
-            console.error('Erro ao excluir o produto');
-          }
-        })
-        .catch(error => {
-          console.error('Erro ao excluir o produto', error);
-        });
-    });
+  menuHamburguer.addEventListener('click', () => {
+    menuNavegacao.style.display = menuNavegacao.style.display === 'none' ? 'block' : 'none';
   });
 </script>
 </html>

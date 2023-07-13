@@ -176,6 +176,16 @@ app.get("/meusProdutos", async (req, res) => {
     }
 });
 
+app.get("/editarProduto/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const produto = await Produto.obterProduto(id);
+    res.render("editarProduto.ejs", { produto: produto });
+  } catch (error) {
+    res.status(500).send("Ocorreu um erro: " + error);
+  }
+});
+
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const senha = req.body.senha;
@@ -257,7 +267,7 @@ app.post("/sairEmpresa", (req, res) => {
 
 app.post("/cadastro", async (req, res) => {
   const { nome, cpf, endereco, email, senha, telefone, cidade, pais } =
-    req.body;
+  req.body;
   const usuario = new Usuario(
     nome,
     cpf,
@@ -267,128 +277,141 @@ app.post("/cadastro", async (req, res) => {
     telefone,
     cidade,
     pais
-  );
-  const idInserido = await usuario.adicionar();
-  res.redirect("/login");
+    );
+    const idInserido = await usuario.adicionar();
+    res.redirect("/login");
 });
 
 app.post("/editarUsuario/:id", async (req, res) => {
-  const id = req.params.id;
-  const { nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre } =
+    const id = req.params.id;
+    const { nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre } =
     req.body;
-  const usuario = new Usuario(
-    nome,
-    cpf,
-    endereco,
-    email,
-    senha,
-    telefone,
-    cidade,
-    pais,
-    sobre
-  );
-  const editedROws = await Usuario.editar(id, usuario);
-  res.redirect(`/perfil`);
+    const usuario = new Usuario(
+      nome,
+      cpf,
+      endereco,
+      email,
+      senha,
+      telefone,
+      cidade,
+      pais,
+      sobre
+      );
+      const editedROws = await Usuario.editar(id, usuario);
+      res.redirect(`/perfil`);
 });
 
 app.post("/editarFotoUsuario/:id", upload.single("foto"), async (req, res) => {
-  const id = req.params.id;
-  const fotoPath = req.file ? req.file.path : null;
+      const id = req.params.id;
+      const fotoPath = req.file ? req.file.path : null;
 
-  if (fotoPath) {
-    const fotoData = fs.readFileSync(fotoPath);
-    const editedRows = await Usuario.editarFoto(id, fotoData);
-    fs.unlinkSync(fotoPath);
-  }
-  res.redirect(`/perfil`);
+      if (fotoPath) {
+        const fotoData = fs.readFileSync(fotoPath);
+        const editedRows = await Usuario.editarFoto(id, fotoData);
+        fs.unlinkSync(fotoPath);
+      }
+      res.redirect(`/perfil`);
 });
 
 app.post("/empresa", async (req, res) => {
-  const { nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais } =
-    req.body;
-  const empresa = new Empresa(
-    nome,
-    cnpj,
-    ramo,
+      const { nome, cnpj, ramo, email, senha, telefone, endereco, cidade, pais } =
+      req.body;
+      const empresa = new Empresa(
+        nome,
+        cnpj,
+        ramo,
     email,
     senha,
     telefone,
     endereco,
     cidade,
     pais
-  );
-  const idInserido = await empresa.adicionar();
-  res.redirect("/loginEmpresa");
+    );
+    const idInserido = await empresa.adicionar();
+    res.redirect("/loginEmpresa");
 });
 
 app.post("/editarEmpresa/:id", async (req, res) => {
-  const id = req.params.id;
-  const {
-    nome,
-    cnpj,
-    ramo,
-    email,
-    senha,
-    telefone,
-    descricao,
-    endereco,
-    cidade,
-    pais,
-  } = req.body;
-  const empresa = new Empresa(
-    nome,
-    cnpj,
-    ramo,
-    email,
-    senha,
+    const id = req.params.id;
+    const {
+      nome,
+      cnpj,
+      ramo,
+      email,
+      senha,
+      telefone,
+      descricao,
+      endereco,
+      cidade,
+      pais,
+    } = req.body;
+    const empresa = new Empresa(
+      nome,
+      cnpj,
+      ramo,
+      email,
+      senha,
     telefone,
     descricao,
     endereco,
     cidade,
     pais
-  );
-  const editedROws = await Empresa.editar(id, empresa);
-  res.redirect(`/perfilEmpresarial`);
+    );
+    const editedROws = await Empresa.editar(id, empresa);
+    res.redirect(`/perfilEmpresarial`);
 });
 
 app.post("/editarFotoEmpresa/:id", upload.single("foto"), async (req, res) => {
-  const id = req.params.id;
-  const fotoPath = req.file ? req.file.path : null;
+    const id = req.params.id;
+    const fotoPath = req.file ? req.file.path : null;
 
-  if (fotoPath) {
-    const fotoData = fs.readFileSync(fotoPath);
-    const editedRows = await Empresa.editarFoto(id, fotoData);
-    fs.unlinkSync(fotoPath);
-  }
-  res.redirect(`/perfilEmpresarial`);
+    if (fotoPath) {
+      const fotoData = fs.readFileSync(fotoPath);
+      const editedRows = await Empresa.editarFoto(id, fotoData);
+      fs.unlinkSync(fotoPath);
+    }
+    res.redirect(`/perfilEmpresarial`);
 });
 
 app.post("/produto", upload.single("foto"), async (req, res) => {
-  const { nome, valor, descricao, empresa, frete } = req.body;
+    const { nome, valor, descricao, empresa, frete } = req.body;
 
-  const fotoPath = req.file ? req.file.path : null;
-  let fotoData = null;
-  if (fotoPath) {
-    fotoData = fs.readFileSync(fotoPath);
-    fs.unlinkSync(fotoPath);
-  }
-  const produto = new Produto(nome, valor, descricao, empresa, frete, fotoData);
-  const idInserido = await produto.adicionar();
-  res.redirect(`/perfilEmpresarial`);
+    const fotoPath = req.file ? req.file.path : null;
+    let fotoData = null;
+    if (fotoPath) {
+      fotoData = fs.readFileSync(fotoPath);
+      fs.unlinkSync(fotoPath);
+    }
+    const produto = new Produto(nome, valor, descricao, empresa, frete, fotoData);
+    const idInserido = await produto.adicionar();
+    res.redirect(`/perfilEmpresarial`);
 });
 
 app.post("/editarProduto/:id", upload.single("foto"), async (req, res) => {
-  const { nome, valor, descricao, empresa, frete } = req.body;
+  try {
+    const id = req.params.id;
+    const fotoPath = req.file ? req.file.path : null;
+    const { nome, valor, descricao, empresa_id, frete } = req.body;
+    const produto = new Produto(
+      nome,
+      valor,
+      descricao,
+      empresa_id,
+      frete
+    );
 
-  const fotoPath = req.file ? req.file.path : null;
-  let fotoData = null;
-  if (fotoPath) {
-    fotoData = fs.readFileSync(fotoPath);
-    fs.unlinkSync(fotoPath);
+    if (fotoPath) {
+      const fotoData = fs.readFileSync(fotoPath);
+      produto.foto = fotoData;
+      fs.unlinkSync(fotoPath);
+    }
+
+    const editedRows = await Produto.editar(id, produto);
+
+    res.redirect("/meusProdutos");
+  } catch (error) {
+    res.status(500).send("Ocorreu um erro: " + error);
   }
-  const produto = new Produto(nome, valor, descricao, empresa, frete, fotoData);
-  const editedROws = await produto.editar(id, produto);
-  res.redirect(`/meusProdutos`);
 });
 
 app.listen("3000", function () {

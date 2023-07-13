@@ -57,18 +57,38 @@ class Produto {
       database: "epampa",
     });
 
-    const [editedRows, editedFields] = await connection.execute(
-      "UPDATE produto SET nome=?, valor=?, descricao=?, empresa_id=?, frete=?, foto=? WHERE id=?",
-      [
-        produto.nome,
-        produto.valor,
-        produto.descricao,
-        produto.empresa,
-        produto.frete,
-        produto.foto,
-        Number.parseInt(id),
-      ]
-    );
+    let editedRows;
+
+    if (produto.foto) {
+      const [insertedRows, insertedFields] = await connection.execute(
+        "UPDATE produto SET nome=?, valor=?, descricao=?, empresa_id=?, frete=?, foto=? WHERE id=?",
+        [
+          produto.nome,
+          produto.valor,
+          produto.descricao,
+          produto.empresa,
+          produto.frete,
+          produto.foto,
+          Number.parseInt(id),
+        ]
+      );
+
+      editedRows = insertedRows;
+    } else {
+      const [updatedRows, updatedFields] = await connection.execute(
+        "UPDATE produto SET nome=?, valor=?, descricao=?, empresa_id=?, frete=? WHERE id=?",
+        [
+          produto.nome,
+          produto.valor,
+          produto.descricao,
+          produto.empresa,
+          produto.frete,
+          Number.parseInt(id),
+        ]
+      );
+
+      editedRows = updatedRows;
+    }
 
     await connection.end();
 
@@ -144,6 +164,29 @@ class Produto {
     await connection.end();
 
     return rows;
+  }
+
+  static async obterProduto(id) {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "41491912",
+      database: "epampa",
+    });
+  
+    const [rows, fields] = await connection.execute(
+      "SELECT * FROM produto WHERE id = ?",
+      [id]
+    );
+  
+    await connection.end();
+  
+    // Verifica se foi encontrado um produto com o ID fornecido
+    if (rows.length === 0) {
+      throw new Error("Produto não encontrado.");
+    }
+  
+    return rows[0]; // Retorna o primeiro resultado encontrado
   }
 }
 

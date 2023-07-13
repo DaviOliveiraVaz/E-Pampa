@@ -57,19 +57,11 @@
               <div class="col-lg-3 order-lg-2">
                 <form id="form-foto" action="/editarFotoEmpresa/<%= empresa.id %>" enctype="multipart/form-data" method="post">
                 <div class="card-profile-image">
-                  <!-- <img id="profile-image" src="<%= empresa.foto ? empresa.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
-                  <!-- <img id="profile-image" src="<%= empresa.foto ? '/uploads/' + empresa.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
-
-                  <!-- <img src="data:image/jpeg;base64,<%- empresa.foto %>" /> -->
-
-                  <!-- <img src="<%= empresa.foto ? 'data:image/jpeg;base64,' + empresa.foto.toString('base64') : '/profile-icon.png' %>" /> -->
-
                   <% if (empresa.foto === null) { %>
-                    <img src="/profile-icon.png" />
+                    <img src="/profile-icon.png" id="profile-image"/>
                   <% } else { %>
-                    <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+                    <img src="data:image/jpeg;base64,<%- empresa.foto %>" id="profile-image"/>
                   <% } %>
-
                   <input name="foto" id="image-input" type="file" style="display: none" onchange="changeProfileImage(event)">
                   <button type="submit" style="display: none;"></button>
                 </div>

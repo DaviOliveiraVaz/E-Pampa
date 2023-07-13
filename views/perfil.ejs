@@ -61,9 +61,9 @@
                   <div class="card-profile-image">
                     <!-- <img id="profile-image" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>" class="rounded-circle"> -->
                     <% if (usuario.foto === null) { %>
-                      <img src="/profile-icon.png" />
+                      <img src="/profile-icon.png" id="profile-image"/>
                     <% } else { %>
-                      <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
+                      <img src="data:image/jpeg;base64,<%- usuario.foto %>" id="profile-image"/>
                     <% } %>
                     <input name="foto" id="image-input" type="file" style="display: none" onchange="changeProfileImage(event)">
                     <button type="submit" style="display: none;"></button>

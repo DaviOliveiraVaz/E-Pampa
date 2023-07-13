@@ -7,6 +7,17 @@
     <title>E-PAMPA</title>
 </head>
 <body>
+  <header class="cabecalho">
+    <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer">
+    <nav class="menu-navegacao">
+      <ul>
+        <li><a href="/produtos">Home</a></li>
+        <li><a href="/perfilEmpresarial">Perfil</a></li>
+        <li><a href="/meusProdutos">Meus Produtos</a></li>
+        <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+      </ul>
+    </nav>
+  </header>
   <main class="produtos">
     <ul>
         <% dados.forEach(function(produto) { %>
@@ -14,12 +25,20 @@
             <h3><%= produto.nome %></h3>
             <p>Valor: <%= produto.valor %></p>
             <p>Descrição: <%= produto.descricao %></p>
-            <p>Empresa: <%= produto.empresa %></p>
+            <p>Empresa: <%= produto.empresa_id %></p>
             <p>Frete: <%= produto.frete %></p>
-            <img src="data:image/jpeg;base64,<%- produto.foto %>" />
+            <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px"/>
           </li>
         <% }) %>
     </ul>
   </main>
 </body>
+<script>
+  const menuHamburguer = document.querySelector('.menu-hamburguer');
+  const menuNavegacao = document.querySelector('.menu-navegacao');
+
+  menuHamburguer.addEventListener('click', () => {
+    menuNavegacao.style.display = menuNavegacao.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
 </html>
