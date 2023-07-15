@@ -144,7 +144,7 @@ app.get("/excluirProduto/:id", async (req, res) => {
     return res.status(404).send("Produto não encontrado!");
   }
   const deletedRows = await Produto.excluir(id);
-  res.send(`Produto excluído com sucesso. ID: ${id}`);
+  res.redirect("/meusProdutos");
 });
 
 app.get("/produtos", async (req, res) => {
@@ -155,7 +155,7 @@ app.get("/produtos", async (req, res) => {
       produto.foto = Buffer.from(produto.foto).toString("base64");
       return produto;
     });
-    res.render("produtos.ejs", { dados: dados });
+    res.render("produtos.ejs", { dados: dados, session: req.session });
   } catch (error) {
     res.status(500).send("Ocorreu um erro: " + error);
   }
@@ -170,7 +170,7 @@ app.get("/meusProdutos", async (req, res) => {
         produto.foto = Buffer.from(produto.foto).toString("base64");
         return produto;
       });
-      res.render("meusProdutos.ejs", { dados: dados });
+      res.render("meusProdutos.ejs", { dados: dados, session: req.session });
   }   catch (error) {
       res.status(500).send("Ocorreu um erro: " + error);
     }
@@ -198,7 +198,7 @@ app.post("/login", (req, res) => {
     }
 
     if (results.length === 0) {
-      res.json({ redirectUrl: "/login?erro=cadastro" });
+      res.redirect("/login");
       return;
     }
 
@@ -208,9 +208,9 @@ app.post("/login", (req, res) => {
     if (senhaCorreta) {
       req.session.id_usuario = results[0].id;
       req.session.email = results[0].email;
-      res.json({ redirectUrl: "/perfil" });
+      res.redirect("/perfil");
     } else {
-      res.json({ redirectUrl: "/login?erro=senha" });
+      res.redirect("/login");
     }
   });
 });
@@ -237,7 +237,7 @@ app.post("/loginEmpresa", (req, res) => {
       return;
     }
     if (results.length === 0) {
-      res.json({ redirectUrl: "/loginEmpresa?erro=cadastro" });
+      res.redirect("/loginEmpresa");
       return;
     }
 
@@ -247,9 +247,9 @@ app.post("/loginEmpresa", (req, res) => {
     if (senhaCorreta) {
       req.session.id_empresa = results[0].id;
       req.session.email = results[0].email;
-      res.json({ redirectUrl: "/perfilEmpresarial" });
+      res.redirect("/perfilEmpresarial");
     } else {
-      res.json({ redirectUrl: "/loginEmpresa?erro=senha" });
+      res.redirect("/loginEmpresa");
     }
   });
 });

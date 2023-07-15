@@ -12,26 +12,29 @@
     <nav class="menu-navegacao">
       <ul>
         <li><a href="/produtos">Home</a></li>
-        <li><a href="/perfilEmpresarial">Perfil</a></li>
-        <li><a href="/meusProdutos">Meus Produtos</a></li>
+        <% if (session.id_empresa) { %>
+          <li><a href="/perfilEmpresarial">Perfil Empresa</a></li>
+          <li><a href="/meusProdutos">Meus Produtos</a></li>
+        <% } else if (session.id_usuario) { %>
+          <li><a href="/perfil">Perfil</a></li>
+          <li><a href="">Favoritos</a></li>
+        <% } %>
         <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
       </ul>
     </nav>
   </header>
-  <main class="produtos">
-    <ul>
-        <% dados.forEach(function(produto) { %>
-          <li>
-            <h3><%= produto.nome %></h3>
-            <p>Valor: <%= produto.valor %></p>
-            <p>Descrição: <%= produto.descricao %></p>
-            <p>Empresa: <%= produto.empresa_id %></p>
-            <p>Frete: <%= produto.frete %></p>
-            <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px"/>
-          </li>
-        <% }) %>
-    </ul>
-  </main>
+  <div class="container">
+    <% dados.forEach(function(produto) { %>
+    <div class="card">
+      <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px" />
+      <div class="name"><%= produto.nome %></div>
+      <div class="price"><%= produto.valor %></div>
+      <div class="description"><%= produto.descricao %></div>
+      <div class="company"><%= produto.empresa_id %></div>
+      <div class="shipping"><%= produto.frete %></div>
+    </div>
+    <% }) %>
+  </div>
 </body>
 <script>
   const menuHamburguer = document.querySelector('.menu-hamburguer');

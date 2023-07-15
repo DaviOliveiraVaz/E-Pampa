@@ -11,10 +11,22 @@
 </head>
 
 <body>
-  <header>
-    <p id="cabecalho">
-      <a href="/meusProdutos">PRODUTOS</a>
-    </p>
+  <header class="cabecalho">
+    <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer" />
+    <nav class="menu-navegacao">
+      <ul>
+        <li><a href="/produtos">Home</a></li>
+        <li><a href="/perfilEmpresarial">Perfil</a></li>
+        <li><a href="/meusProdutos">Meus Produtos</a></li>
+        <li>
+          <a
+            href="/sair"
+            onclick="return confirm('Tem certeza que deseja sair?')"
+            >Sair</a
+          >
+        </li>
+      </ul>
+    </nav>
   </header>
 
   <main>
@@ -62,6 +74,15 @@
   
     </form>
   </main>
+  <script>
+    const menuHamburguer = document.querySelector(".menu-hamburguer");
+      const menuNavegacao = document.querySelector(".menu-navegacao");
+
+      menuHamburguer.addEventListener("click", () => {
+        menuNavegacao.style.display =
+        menuNavegacao.style.display === "none" ? "block" : "none";
+      });
+  </script>
 </body>
 
 </html>

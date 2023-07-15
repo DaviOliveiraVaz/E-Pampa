@@ -1,46 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/style_produtos.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/style_produtos.css" rel="stylesheet" />
     <title>Meus Produtos</title>
-</head>
-<body>
-  <header class="cabecalho">
-    <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer">
-    <nav class="menu-navegacao">
-      <ul>
-        <li><a href="/produtos">Home</a></li>
-        <li><a href="/perfilEmpresarial">Perfil</a></li>
-        <li><a href="/meusProdutos">Meus Produtos</a></li>
-        <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <ul>
-        <% dados.forEach(function(produto) { %>
+  </head>
+  <body>
+    <header class="cabecalho">
+      <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer" />
+      <nav class="menu-navegacao">
+        <ul>
+          <li><a href="/produtos">Home</a></li>
+          <li><a href="/perfilEmpresarial">Perfil</a></li>
+          <li><a href="/meusProdutos">Meus Produtos</a></li>
           <li>
-            <h3><%= produto.nome %></h3>
-            <p>Valor: <%= produto.valor %></p>
-            <p>Descrição: <%= produto.descricao %></p>
-            <p>Empresa: <%= produto.empresa_id %></p>
-            <p>Frete: <%= produto.frete %></p>
-            <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px"/>
-            <a href="/editarProduto/<%= produto.id %>" class="btn-editar">Editar</a>
-            <a href="/excluirProduto/<%= produto.id %>" onclick="return confirm('Tem certeza que deseja excluir esse produto?')">Excluir</a>
+            <a
+              href="/sair"
+              onclick="return confirm('Tem certeza que deseja sair?')"
+              >Sair</a
+            >
           </li>
-        <% }) %>
-      </ul>
-  </main>
-</body>
-<script>
-  const menuHamburguer = document.querySelector('.menu-hamburguer');
-  const menuNavegacao = document.querySelector('.menu-navegacao');
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <% dados.forEach(function(produto) { %>
+      <div class="card">
+        <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px" />
+        <div class="name"><%= produto.nome %></div>
+        <div class="price"><%= produto.valor %></div>
+        <div class="description"><%= produto.descricao %></div>
+        <div class="company"><%= produto.empresa_id %></div>
+        <div class="shipping"><%= produto.frete %></div>
+        <div class="card-buttons">
+          <button class="editar-btn" onclick="editarProduto('<%= produto.id %>')">Editar</button>
+          <button class="excluir-btn" onclick="excluirProduto('<%= produto.id %>')">Excluir</button>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <script>
+      const menuHamburguer = document.querySelector(".menu-hamburguer");
+      const menuNavegacao = document.querySelector(".menu-navegacao");
 
-  menuHamburguer.addEventListener('click', () => {
-    menuNavegacao.style.display = menuNavegacao.style.display === 'none' ? 'block' : 'none';
-  });
-</script>
+      menuHamburguer.addEventListener("click", () => {
+        menuNavegacao.style.display =
+        menuNavegacao.style.display === "none" ? "block" : "none";
+      });
+
+      function editarProduto(idDoProduto) {
+        window.location.href = `/editarProduto/${idDoProduto}`;
+      }
+
+      function excluirProduto(idDoProduto) {
+        if (confirm('Tem certeza que deseja excluir esse produto?')) {
+          window.location.href = `/excluirProduto/${idDoProduto}`;
+        }
+      }
+    </script>
+  </body>
 </html>
