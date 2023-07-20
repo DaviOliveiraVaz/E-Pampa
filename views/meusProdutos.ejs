@@ -23,6 +23,24 @@
           </li>
         </ul>
       </nav>
+      <!-- <ul class="navbar-nav align-items-center d-none d-md-flex">
+        <li class="nav-item dropdown">
+          <a class="nav-link pr-0" href="/perfilEmpresarial" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="media align-items-center">
+              <span class="avatar avatar-sm rounded-circle">
+                <% if (empresa.foto === null) { %>
+                  <img src="/profile-icon.png" />
+                <% } else if (typeof empresa.foto === 'string') { %>
+                  <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+                <% } %>
+              </span>
+              <div class="media-body ml-2 d-none d-lg-block">
+                <span class="mb-0 text-sm  font-weight-bold"><%= empresa.nome %></span>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul> -->
     </header>
     <div class="container">
       <% dados.forEach(function(produto) { %>

@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="page">
-    <form method="post" action="/cadastro" class="formLogin" onsubmit="alert('Usuário cadastrado com sucesso!')">
+    <form method="post" action="/cadastro" class="formLogin">
       <h1>Cadastro de Usuário</h1>
       <p>Digite os seus dados no campo abaixo.</p>
         <section>
@@ -62,31 +62,11 @@
             </div>
           </div>
         </section>
-
         <section id="botoes">
           <button type="reset" value="Acessar" class="cadastro">Apagar</button>
           <button type="submit" value="Acessar" class="cadastro" id="env">Enviar</button>
         </section>
     </form>
   </div>
-  <!-- <script src="https://unpkg.com/cep-promise/dist/cep-promise.js"></script>
-  <script>
-    const cepInput = document.querySelector('#enderecoInput');
-    const cidadeInput = document.querySelector('#cidadeInput');
-    const paisInput = document.querySelector('#paisInput');
-
-    cepInput.addEventListener('change', function() {
-      const cep = cepInput.value;
-
-      window.cepPromise(cep)
-        .then(function(result) {
-          cidadeInput.value = result.city;
-          paisInput.value = result.state;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    });
-  </script> -->
 </body>
 </html>

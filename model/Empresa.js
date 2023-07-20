@@ -39,6 +39,16 @@ class Empresa {
       database: "epampa",
     });
 
+    const [existingRows, existingFields] = await connection.execute(
+      'SELECT id FROM empresa WHERE email = ?',
+      [this.email]
+    );
+
+    if (existingRows.length > 0) {
+      await connection.end();
+      throw new Error('E-mail já utilizado');
+    }
+
     const valores = [
       this.nome,
       this.cnpj,

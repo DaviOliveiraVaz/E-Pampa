@@ -38,6 +38,16 @@ class Usuario {
       database: 'epampa',
     });
 
+    const [existingRows, existingFields] = await connection.execute(
+      'SELECT id FROM usuario WHERE email = ?',
+      [this.email]
+    );
+
+    if (existingRows.length > 0) {
+      await connection.end();
+      throw new Error('E-mail já utilizado');
+    }
+
     const [rows, fields] = await connection.execute(
       'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
       [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.pais]

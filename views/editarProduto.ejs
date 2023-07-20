@@ -37,13 +37,11 @@
           <p>NOME</p>
           <input type="text" name="nome" placeholder="Digite o nome do produto" id="atv" value="<%= produto.nome %>">
         </div>
-  
         <div class="pai">
           <div>
             <p>VALOR</p>
             <input type="text" name="valor" placeholder="Digite o valor do produto" id="atv" value="<%= produto.valor %>">
           </div>
-  
           <div>
             <p>DESCRIÇÃO</p>
             <input type="text" name="descricao" placeholder="Digite a descrição do produto" id="atv" value="<%= produto.descricao %>">
@@ -51,19 +49,16 @@
         </div>
         <button type="reset" id="env">Apagar</button>
       </section>
-  
       <section>
         <div>
           <p>EMPRESA</p>
           <input type="text" name="empresa_id" placeholder="Digite a sua empresa" id="atv" value="<%= produto.empresa_id %>">
         </div>
-  
         <div class="pai">
           <div>
             <p>FRETE</p>
             <input type="text" name="frete" placeholder="Digite o frete do produto" id="atv" value="<%= produto.frete %>">
           </div>
-  
           <div>
             <p>FOTO</p>
             <input type="file" name="foto" placeholder="Informe uma foto do produto" id="atv" value="<%= produto.foto %>"> 
@@ -71,18 +66,16 @@
         </div>
         <button type="submit" id="env" class="editar">Enviar</button>
       </section>
-  
     </form>
   </main>
-  <script>
-    const menuHamburguer = document.querySelector(".menu-hamburguer");
-      const menuNavegacao = document.querySelector(".menu-navegacao");
-
-      menuHamburguer.addEventListener("click", () => {
-        menuNavegacao.style.display =
-        menuNavegacao.style.display === "none" ? "block" : "none";
-      });
-  </script>
 </body>
+<script>
+  const menuHamburguer = document.querySelector('.menu-hamburguer');
+  const menuNavegacao = document.querySelector('.menu-navegacao');
+
+  menuHamburguer.addEventListener('click', () => {
+    menuNavegacao.style.display = menuNavegacao.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
 
 </html>

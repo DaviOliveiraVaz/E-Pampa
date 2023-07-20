@@ -2,24 +2,18 @@
 
 <body>
   <div class="main-content">
-    <!-- Top navbar -->
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
-        <!-- Brand -->
         <a href="/produtos"><img src="/home.png" alt="home" height="40px"></a>
         <a href="/meusProdutos"><img src="/produtos2.png" alt="home" height="40px"></a>
-        <!-- <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfilEmpresa">PERFIL DA EMPRESA</a> -->
-        <!-- Form -->
-        <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
             <a class="nav-link pr-0" href="/perfilEmpresarial" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
-                  <!-- <img src="data:image/jpeg;base64,<%- empresa.foto %>" /> -->
                   <% if (empresa.foto === null) { %>
                     <img src="/profile-icon.png" />
-                  <% } else { %>
+                  <% } else if (typeof empresa.foto === 'string') { %>
                     <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
                   <% } %>
                 </span>

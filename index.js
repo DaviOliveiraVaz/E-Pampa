@@ -41,7 +41,7 @@ app.get("/perfil", async (req, res) => {
     if (!(usuarioExistente.length && usuarioExistente.length)) {
       return res.status(404).json({ mensagem: "Cadastro não encontrado." });
     }
-    const foto = Buffer.from(usuarioExistente[0].foto).toString("base64");
+    const foto = usuarioExistente[0].foto ? Buffer.from(usuarioExistente[0].foto).toString("base64") : null;
 
     res.render("perfil.ejs", {
       usuario: {
@@ -77,7 +77,7 @@ app.get("/perfilEmpresarial", async (req, res) => {
       return res.status(404).json({ mensagem: "Cadastro não encontrado." });
     }
 
-    const foto = Buffer.from(empresaExistente[0].foto).toString("base64");
+    const foto = empresaExistente[0].foto ? Buffer.from(empresaExistente[0].foto).toString("base64") : null;
 
     res.render("perfil_empresarial.ejs", {
       empresa: {
@@ -165,12 +165,17 @@ app.get("/meusProdutos", async (req, res) => {
   try {
       const id = req.session.id_empresa;
       const produto = new Produto();
+      const empresaExistente = await Empresa.buscarPorId(id);
+      const foto = Buffer.from(empresaExistente[0].foto).toString("base64");
       let dados = await produto.meusProdutos(id);
       dados = dados.map(function (produto) {
         produto.foto = Buffer.from(produto.foto).toString("base64");
         return produto;
       });
-      res.render("meusProdutos.ejs", { dados: dados, session: req.session });
+      res.render("meusProdutos.ejs", { dados: dados, session: req.session, empresa: {
+        ...empresaExistente[0],
+        foto: foto,
+      }, });
   }   catch (error) {
       res.status(500).send("Ocorreu um erro: " + error);
     }
@@ -193,12 +198,12 @@ app.post("/login", (req, res) => {
   connection.query(query, [email], async (error, results) => {
     if (error) {
       console.error("Erro ao consultar o banco de dados: ", error);
-      res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
+      res.status(500).send(`<script>alert("Ocorreu um erro ao consultar o banco de dados."); window.history.back();</script>`);
       return;
     }
 
     if (results.length === 0) {
-      res.redirect("/login");
+      res.send(`<script>alert("Cadastro não encontrado."); window.history.back();</script>`);
       return;
     }
 
@@ -210,7 +215,7 @@ app.post("/login", (req, res) => {
       req.session.email = results[0].email;
       res.redirect("/perfil");
     } else {
-      res.redirect("/login");
+      res.send(`<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`);
     }
   });
 });
@@ -233,11 +238,12 @@ app.post("/loginEmpresa", (req, res) => {
   connection.query(query, [email], async (error, results) => {
     if (error) {
       console.error("Erro ao consultar o banco de dados: ", error);
-      res.status(500).json({ mensagem: "Ocorreu um erro ao consultar o banco de dados." });
+      res.send(`<script>alert("Ocorreu um erro ao consultar o banco de dados."); window.history.back();</script>`);
       return;
     }
+
     if (results.length === 0) {
-      res.redirect("/loginEmpresa");
+      res.send(`<script>alert("Cadastro não encontrado."); window.history.back();</script>`);
       return;
     }
 
@@ -249,7 +255,7 @@ app.post("/loginEmpresa", (req, res) => {
       req.session.email = results[0].email;
       res.redirect("/perfilEmpresarial");
     } else {
-      res.redirect("/loginEmpresa");
+      res.send(`<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`);
     }
   });
 });
@@ -278,8 +284,18 @@ app.post("/cadastro", async (req, res) => {
     cidade,
     pais
     );
-    const idInserido = await usuario.adicionar();
-    res.redirect("/login");
+
+    try {
+      const idInserido = await usuario.adicionar();
+      const mensagem = "Usuário cadastrado com sucesso!";
+      res.send(`<script>alert("${mensagem}"); window.location.href = "/login";</script>`);
+    } catch (error) {
+      let mensagem = "Erro ao cadastrar usuário.";
+      if (error.message.includes("E-mail já utilizado")) {
+        mensagem = `${mensagem} E-mail já utilizado!`;
+      }
+      res.send(`<script>alert("${mensagem}"); window.history.back();</script>`);
+    }
 });
 
 app.post("/editarUsuario/:id", async (req, res) => {
@@ -327,8 +343,18 @@ app.post("/empresa", async (req, res) => {
     cidade,
     pais
     );
-    const idInserido = await empresa.adicionar();
-    res.redirect("/loginEmpresa");
+
+    try {
+      const idInserido = await empresa.adicionar();
+      const mensagem = "Empresa cadastrado com sucesso!";
+      res.send(`<script>alert("${mensagem}"); window.location.href = "/loginEmpresa";</script>`);
+    } catch (error) {
+      let mensagem = "Erro ao cadastrar empresa.";
+      if (error.message.includes("E-mail já utilizado")) {
+        mensagem = `${mensagem} E-mail já utilizado!`;
+      }
+      res.send(`<script>alert("${mensagem}"); window.history.back();</script>`);
+    }
 });
 
 app.post("/editarEmpresa/:id", async (req, res) => {

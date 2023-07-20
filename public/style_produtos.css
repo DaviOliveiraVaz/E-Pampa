@@ -26,12 +26,13 @@
     padding: 16px;
     text-align: center;
     position: relative;
+    max-height: 450px;
   }
 
   .card img {
     max-width: 100%;
-    height: auto;
     margin-bottom: 16px;
+    max-height: 250px;
   }
 
   .card .name {
@@ -79,4 +80,9 @@
 
   .card-buttons button:hover {
     background-color: #e0e0e0;
+  }
+
+  .img {
+    width: 100%;
+    max-height: 300px;
   }

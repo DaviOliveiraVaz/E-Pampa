@@ -13,7 +13,7 @@
       <ul>
         <li><a href="/produtos">Home</a></li>
         <% if (session.id_empresa) { %>
-          <li><a href="/perfilEmpresarial">Perfil Empresa</a></li>
+          <li><a href="/perfilEmpresarial">Perfil</a></li>
           <li><a href="/meusProdutos">Meus Produtos</a></li>
         <% } else if (session.id_usuario) { %>
           <li><a href="/perfil">Perfil</a></li>
@@ -26,7 +26,7 @@
   <div class="container">
     <% dados.forEach(function(produto) { %>
     <div class="card">
-      <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px" />
+      <img src="data:image/jpeg;base64,<%- produto.foto %>" class="img" />
       <div class="name"><%= produto.nome %></div>
       <div class="price"><%= produto.valor %></div>
       <div class="description"><%= produto.descricao %></div>
