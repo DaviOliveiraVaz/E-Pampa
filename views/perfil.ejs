@@ -3,39 +3,37 @@
 <body>
   <div class="main-content">
     <!-- Top navbar -->
-    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
-      <div class="container-fluid">
-        <!-- Brand -->
-        <a href="/produtos"><img src="/home.png" alt="home" height="40px"></a>
-        <!-- <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/perfil">PERFIL DO USUÁRIO</a> -->
-        <!-- Form -->
-        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-          <div class="form-group mb-0">
-          </div>
-        </form>
-        <!-- User -->
-        <ul class="navbar-nav align-items-center d-none d-md-flex">
-          <li class="nav-item dropdown">
-            <a class="nav-link pr-0" href="/perfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <div class="media align-items-center">
-                <span class="avatar avatar-sm rounded-circle">
-                  <!-- <img alt="Image placeholder" src="<%= usuario.foto ? usuario.foto : '/profile-icon.png' %>"> -->
-                  <% if (usuario.foto === null) { %>
-                    <img src="/profile-icon.png" />
-                  <% } else { %>
-                    <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
-                  <% } %>
-                </span>
-                <div class="media-body ml-2 d-none d-lg-block">
-                  <span class="mb-0 text-sm  font-weight-bold"><%= usuario.nome %></span>
-                </div>
-              </div>
-            </a>
-          </li>
-        </ul>
+    <header class="cabecalho">
+      <div id="menu" class="menu-bg">
+        <div id="menu-bar" class="menu-hamburguer" onclick="menuOnClick()">
+            <div id="bar1" class="bar"></div>
+            <div id="bar2" class="bar"></div>
+            <div id="bar3" class="bar"></div>
+        </div>
+        <nav id="menu-navegacao" class="nav">
+            <ul>
+                <li><a href="/produtos">Home</a></li>
+                <li><a href="/perfil">Perfil</a></li>
+                <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="menu-bg" id="menu-bg"></div>
+      <a href="/perfil">
+      <div class="card-foto">
+        <div class="foto">
+          <span>
+            <% if (usuario.foto === null) { %>
+              <img src="/profile-icon.png" />
+            <% } else if (typeof usuario.foto === 'string') { %>
+              <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
+            <% } %>
+          </span>
       </div>
-    </nav>
-    <!-- Header -->
+      <span class="nome"><%= usuario.nome %></span>
+    </div>
+    </a>
+    </header>
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-repeat: no-repeat; background-size: cover; background-image: url(/perfil.jpg);">
       <!-- Mask -->
       <span class="mask bg-gradient-default opacity-8"></span>
@@ -232,5 +230,11 @@
 
       return false;
     }
+
+    function menuOnClick() {
+        document.getElementById("menu-bar").classList.toggle("change");
+        document.getElementById("menu-navegacao").classList.toggle("change");
+        document.getElementById("menu-bg").classList.toggle("change-bg");
+      }
 </script>
 </body>

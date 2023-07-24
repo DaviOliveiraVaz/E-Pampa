@@ -1,88 +1,289 @@
-.produtos{
-    color: black;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    header.cabecalho {
+      background-color: #015a2e;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .cabecalho {
+      background-color: #015a2e;
+      padding: 16px;
+      display: flex; /* Adicione essa propriedade para que os elementos fiquem em linha */
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .cabecalho .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .cabecalho .menu-navegacao {
+      display: flex;
+    }
+
+    .cabecalho .menu-navegacao ul {
+      list-style: none;
+      display: flex;
+    }
+
+    .cabecalho .menu-navegacao li {
+      margin-right: 24px;
+    }
+
+    .cabecalho .menu-navegacao a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+    }
+
+    .cabecalho .menu-navegacao a:hover {
+      color: #f0f0f0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-gap: 20px;
+      justify-items: center;
+      margin-top: 20px;
+      align-items: center;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding: 16px;
+      text-align: center;
+      height: 300px;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 200px;
+      height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .card .name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+
+    .card .price {
+      font-size: 16px;
+      margin-top: 8px;
+      color: #027c3f;
+    }
+
+    .card .description {
+      font-size: 14px;
+      color: #777;
+      margin-top: 8px;
+    }
+
+    .card .company {
+      font-size: 14px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    .card .shipping {
+      font-size: 14px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    .card-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .card-buttons button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .card-foto {
+      display: flex;
+      align-items: center;
+    }
+
+    .card-foto .foto span {
+      display: block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 15px;
+    }
+
+    .card-foto .foto img {
+      width: 100%;
+      height: auto;
+    }
+
+    .card-foto .foto div {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    #menu {
+      z-index: 2;
+    }
+
+    #menu-bar {
+      width: 45px;
+      height: 40px;
+      margin: 30px 20px 20px 0;
+      cursor: pointer;
+    }
+
+    .bar {
+      height: 5px;
+      width: 100%;
+      background-color: #fff;
+      display: block;
+      border-radius: 5px;
+      transition: 0.3s ease;
+    }
+
+    #bar1 {
+      transform: translateY(-4px);
+    }
+
+    #bar3 {
+      transform: translateY(4px);
+    }
+
+    .nav {
+      transition: 0.3s ease;
+      display: none;
+    }
+
+    .nav ul {
+      padding: 0 22px;
+    }
+
+    .nav li {
+      list-style: none;
+      padding: 12px 0;
+    }
+
+    .nav li a {
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+    }
+
+    .nav li a:hover {
+      font-weight: bold;
+    }
+
+    .menu-bg, #menu {
+      top: 0;
+      left: 0;
+      position: absolute;
+    }
+
+    .menu-bg {
+      z-index: 1;
+      width: 0;
+      height: 0;
+      margin: 30px 0 20px 20px;
+      background: radial-gradient(circle, #015a2e, #015a2e);
+      border-radius: 50%;
+      transition: 0.3s ease;
+    }
+
+    .change {
+      display: block;
+    }
+
+    .change .bar {
+      background-color: white;
+    }
+
+    .change #bar1 {
+      transform: translateY(4px) rotateZ(-45deg);
+    }
+
+    .change #bar2 {
+      opacity: 0;
+    }
+
+    .change #bar3 {
+      transform: translateY(-6px) rotateZ(45deg);
+    }
+
+    .change-bg {
+      width: 520px;
+      height: 460px;
+      transform: translate(-60%,-30%);
+    }
+
+a{
+  text-decoration: none;
+  color: #fff;
 }
 
-.menu-hamburguer {
-    display: block;
-    cursor: pointer;
-  }
+a:hover{
+  color: #ffffffc0;
+}
 
-  .menu-navegacao {
-    display: none;
-  }
+span.nome{
+  margin-right: 25px;
+}
 
-  .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 20px;
-    justify-content: center;
-    align-items: center;
-  }
+.editar-btn{
+  background-color: #FFCB04;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
+}
 
-  .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 16px;
-    text-align: center;
-    position: relative;
-    max-height: 450px;
-  }
+.editar-btn:hover{
+  transform: scale(1.05);
+  background-color: #d2ca28;
+}
 
-  .card img {
-    max-width: 100%;
-    margin-bottom: 16px;
-    max-height: 250px;
-  }
+.excluir-btn{
+  background-color: #EE302F;
+  border-color: #EE302F;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
+}
 
-  .card .name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .card .price {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
-
-  .card .description {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 8px;
-  }
-
-  .card .company {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 8px;
-  }
-
-  .card .shipping {
-    font-size: 14px;
-    color: #555;
-  }
-
-  .card-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .card-buttons button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: #f0f0f0;
-    border: none;
-    cursor: pointer;
-  }
-
-  .card-buttons button:hover {
-    background-color: #e0e0e0;
-  }
-
-  .img {
-    width: 100%;
-    max-height: 300px;
-  }
+.excluir-btn:hover{
+  transform: scale(1.05);
+  background-color: #b62424;
+  border-color: #b62424;
+}

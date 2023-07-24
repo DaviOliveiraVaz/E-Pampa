@@ -81,7 +81,7 @@ class Empresa {
 
     const [rows, fields] = await connection.execute(
       "SELECT * FROM empresa WHERE id = ?",
-      [id]
+      [id || null]
     );
 
     await connection.end();

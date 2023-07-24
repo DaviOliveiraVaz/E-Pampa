@@ -4,53 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/style_produtos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Meus Produtos</title>
   </head>
   <body>
     <header class="cabecalho">
-      <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer" />
-      <nav class="menu-navegacao">
-        <ul>
-          <li><a href="/produtos">Home</a></li>
-          <li><a href="/perfilEmpresarial">Perfil</a></li>
-          <li><a href="/meusProdutos">Meus Produtos</a></li>
-          <li>
-            <a
-              href="/sair"
-              onclick="return confirm('Tem certeza que deseja sair?')"
-              >Sair</a
-            >
-          </li>
-        </ul>
-      </nav>
-      <!-- <ul class="navbar-nav align-items-center d-none d-md-flex">
-        <li class="nav-item dropdown">
-          <a class="nav-link pr-0" href="/perfilEmpresarial" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="media align-items-center">
-              <span class="avatar avatar-sm rounded-circle">
-                <% if (empresa.foto === null) { %>
-                  <img src="/profile-icon.png" />
-                <% } else if (typeof empresa.foto === 'string') { %>
-                  <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
-                <% } %>
-              </span>
-              <div class="media-body ml-2 d-none d-lg-block">
-                <span class="mb-0 text-sm  font-weight-bold"><%= empresa.nome %></span>
-              </div>
-            </div>
-          </a>
-        </li>
-      </ul> -->
+      <div id="menu" class="menu-bg">
+        <div id="menu-bar" class="menu-hamburguer" onclick="menuOnClick()">
+            <div id="bar1" class="bar"></div>
+            <div id="bar2" class="bar"></div>
+            <div id="bar3" class="bar"></div>
+        </div>
+        <nav id="menu-navegacao" class="nav">
+            <ul>
+                <li><a href="/produtos">Home</a></li>
+                <li><a href="/perfilEmpresarial">Perfil</a></li>
+                <li><a href="/meusProdutos">Meus Produtos</a></li>
+                <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="menu-bg" id="menu-bg"></div>
+
+      <a href="/perfilEmpresarial">
+      <div class="card-foto">
+        <div class="foto">
+          <span>
+            <% if (empresa.foto === null) { %>
+              <img src="/profile-icon.png" />
+            <% } else if (typeof empresa.foto === 'string') { %>
+              <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+            <% } %>
+          </span>
+      </div>
+      <span class="nome"><%= empresa.nome %></span>
+    </div>
+    </a>
     </header>
     <div class="container">
       <% dados.forEach(function(produto) { %>
       <div class="card">
         <img src="data:image/jpeg;base64,<%- produto.foto %>" height="100px" />
         <div class="name"><%= produto.nome %></div>
-        <div class="price"><%= produto.valor %></div>
+        <div class="price">R$<%= produto.valor %></div>
         <div class="description"><%= produto.descricao %></div>
-        <div class="company"><%= produto.empresa_id %></div>
-        <div class="shipping"><%= produto.frete %></div>
+        <div class="company">EMPRESA: <%= produto.empresa_id %></div>
+        <div class="shipping">FRETE: R$<%= produto.frete %></div>
         <div class="card-buttons">
           <button class="editar-btn" onclick="editarProduto('<%= produto.id %>')">Editar</button>
           <button class="excluir-btn" onclick="excluirProduto('<%= produto.id %>')">Excluir</button>
@@ -59,13 +58,11 @@
       <% }) %>
     </div>
     <script>
-      const menuHamburguer = document.querySelector(".menu-hamburguer");
-      const menuNavegacao = document.querySelector(".menu-navegacao");
-
-      menuHamburguer.addEventListener("click", () => {
-        menuNavegacao.style.display =
-        menuNavegacao.style.display === "none" ? "block" : "none";
-      });
+      function menuOnClick() {
+        document.getElementById("menu-bar").classList.toggle("change");
+        document.getElementById("menu-navegacao").classList.toggle("change");
+        document.getElementById("menu-bg").classList.toggle("change-bg");
+      }
 
       function editarProduto(idDoProduto) {
         window.location.href = `/editarProduto/${idDoProduto}`;

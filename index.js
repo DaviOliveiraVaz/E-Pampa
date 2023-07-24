@@ -149,13 +149,59 @@ app.get("/excluirProduto/:id", async (req, res) => {
 
 app.get("/produtos", async (req, res) => {
   try {
+    const id_empresa = req.session.id_empresa;
+    const id_usuario = req.session.id_usuario;
     const produto = new Produto();
-    let dados = await produto.findAll();
-    dados = dados.map(function (produto) {
-      produto.foto = Buffer.from(produto.foto).toString("base64");
-      return produto;
-    });
-    res.render("produtos.ejs", { dados: dados, session: req.session });
+
+    if (!id_empresa && !id_usuario) {
+      return res.redirect("/login");
+    }
+
+    if (id_empresa) {
+      const empresaExistente = await Empresa.buscarPorId(id_empresa);
+
+      if (!empresaExistente || empresaExistente.length === 0) {
+        return res.status(404).send("Empresa não encontrada.");
+      }
+
+      const foto = empresaExistente[0]?.foto ? Buffer.from(empresaExistente[0].foto).toString("base64") : null;
+      let dados = await produto.findAll();
+      dados = dados.map(function (produto) {
+        produto.foto = Buffer.from(produto.foto).toString("base64");
+        return produto;
+      });
+
+      return res.render("produtos.ejs", {
+        dados: dados,
+        session: req.session,
+        empresa: {
+          ...empresaExistente[0],
+          foto: foto,
+        }
+      });
+    }
+
+    if (id_usuario) {
+      const usuario = await Usuario.buscarPorId(id_usuario);
+      if (!usuario || usuario.length === 0) {
+        return res.status(404).send("Usuário não encontrado.");
+      }
+
+      let dados = await produto.findAll();
+      dados = dados.map(function (produto) {
+        produto.foto = Buffer.from(produto.foto).toString("base64");
+        return produto;
+      });
+
+      return res.render("produtos.ejs", {
+        dados: dados,
+        session: req.session,
+        usuario: {
+          ...usuario[0],
+          foto: usuario[0]?.foto ? Buffer.from(usuario[0].foto).toString("base64") : null
+        }
+      });
+    }
   } catch (error) {
     res.status(500).send("Ocorreu um erro: " + error);
   }
@@ -163,6 +209,11 @@ app.get("/produtos", async (req, res) => {
 
 app.get("/meusProdutos", async (req, res) => {
   try {
+    const id_empresa = req.session.id_empresa;
+    const id_usuario = req.session.id_usuario;
+    if (!id_empresa && !id_usuario) {
+      return res.redirect("/loginEmpresa");
+    }
       const id = req.session.id_empresa;
       const produto = new Produto();
       const empresaExistente = await Empresa.buscarPorId(id);
@@ -227,6 +278,7 @@ app.post("/sair", (req, res) => {
       res.sendStatus(500);
       return;
     }
+    res.clearCookie("connect.sid");
     res.redirect("/");
   });
 });

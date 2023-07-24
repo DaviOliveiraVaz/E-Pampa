@@ -8,40 +8,79 @@
 </head>
 <body>
   <header class="cabecalho">
-    <img src="menu.png" alt="menu" height="30px" class="menu-hamburguer">
-    <nav class="menu-navegacao">
-      <ul>
-        <li><a href="/produtos">Home</a></li>
-        <% if (session.id_empresa) { %>
-          <li><a href="/perfilEmpresarial">Perfil</a></li>
-          <li><a href="/meusProdutos">Meus Produtos</a></li>
-        <% } else if (session.id_usuario) { %>
-          <li><a href="/perfil">Perfil</a></li>
-          <li><a href="">Favoritos</a></li>
-        <% } %>
-        <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
-      </ul>
-    </nav>
+    <div id="menu" class="menu-bg">
+      <div id="menu-bar" class="menu-hamburguer" onclick="menuOnClick()">
+          <div id="bar1" class="bar"></div>
+          <div id="bar2" class="bar"></div>
+          <div id="bar3" class="bar"></div>
+      </div>
+      <nav id="menu-navegacao" class="nav">
+          <ul>
+            <% if (session.id_empresa) { %>
+              <li><a href="/produtos">Home</a></li>
+              <li><a href="/perfilEmpresarial">Perfil</a></li>
+              <li><a href="/meusProdutos">Meus Produtos</a></li>
+              <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+              <% } else if (session.id_usuario) { %>
+                <li><a href="/produtos">Home</a></li>
+                <li><a href="/perfil">Perfil</a></li>
+                <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
+              <% } %>
+          </ul>
+      </nav>
+  </div>
+  <div class="menu-bg" id="menu-bg"></div>
+
+  <% if (session.id_empresa) { %>
+    <a href="/perfilEmpresarial">
+    <div class="card-foto">
+      <div class="foto">
+        <span>
+          <% if (empresa.foto === null) { %>
+            <img src="/profile-icon.png" />
+          <% } else if (typeof empresa.foto === 'string') { %>
+            <img src="data:image/jpeg;base64,<%- empresa.foto %>" />
+          <% } %>
+        </span>
+    </div>
+    <span class="nome"><%= empresa.nome %></span>
+  </div>
+  </a>
+  <% } else if (session.id_usuario) { %>
+    <a href="/perfil">
+      <div class="card-foto">
+        <div class="foto">
+          <span>
+            <% if (usuario.foto === null) { %>
+              <img src="/profile-icon.png" />
+            <% } else if (typeof usuario.foto === 'string') { %>
+              <img src="data:image/jpeg;base64,<%- usuario.foto %>" />
+            <% } %>
+          </span>
+      </div>
+      <span class="nome"><%= usuario.nome %></span>
+    </div>
+    </a>
+    <% } %>
   </header>
   <div class="container">
     <% dados.forEach(function(produto) { %>
     <div class="card">
       <img src="data:image/jpeg;base64,<%- produto.foto %>" class="img" />
       <div class="name"><%= produto.nome %></div>
-      <div class="price"><%= produto.valor %></div>
+      <div class="price">R$<%= produto.valor %></div>
       <div class="description"><%= produto.descricao %></div>
-      <div class="company"><%= produto.empresa_id %></div>
-      <div class="shipping"><%= produto.frete %></div>
+      <div class="company">EMPRESA: <%= produto.empresa_id %></div>
+      <div class="shipping">FRETE: R$<%= produto.frete %></div>
     </div>
     <% }) %>
   </div>
 </body>
 <script>
-  const menuHamburguer = document.querySelector('.menu-hamburguer');
-  const menuNavegacao = document.querySelector('.menu-navegacao');
-
-  menuHamburguer.addEventListener('click', () => {
-    menuNavegacao.style.display = menuNavegacao.style.display === 'none' ? 'block' : 'none';
-  });
+  function menuOnClick() {
+        document.getElementById("menu-bar").classList.toggle("change");
+        document.getElementById("menu-navegacao").classList.toggle("change");
+        document.getElementById("menu-bg").classList.toggle("change-bg");
+      }
 </script>
 </html>
