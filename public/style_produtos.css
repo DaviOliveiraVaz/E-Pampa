@@ -7,7 +7,7 @@
 
     header.cabecalho {
       background-color: #015a2e;
-      padding: 16px;
+      padding: 38px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -17,7 +17,7 @@
     .cabecalho {
       background-color: #015a2e;
       padding: 16px;
-      display: flex; /* Adicione essa propriedade para que os elementos fiquem em linha */
+      display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
@@ -122,12 +122,16 @@
       cursor: pointer;
     }
 
-    .card-foto {
+    .card-foto-perfil {
       display: flex;
       align-items: center;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
     }
 
-    .card-foto .foto span {
+    .card-foto-perfil .foto span {
       display: block;
       width: 40px;
       height: 40px;
@@ -136,12 +140,12 @@
       margin-right: 15px;
     }
 
-    .card-foto .foto img {
+    .card-foto-perfil .foto img {
       width: 100%;
       height: auto;
     }
 
-    .card-foto .foto div {
+    .card-foto-perfil .foto div {
       display: flex;
       align-items: center;
       font-weight: bold;
@@ -149,6 +153,8 @@
 
     #menu {
       z-index: 2;
+      position: fixed;
+      margin-top: 2px;
     }
 
     #menu-bar {

@@ -19,7 +19,7 @@
             <% if (session.id_empresa) { %>
               <li><a href="/produtos">Home</a></li>
               <li><a href="/perfilEmpresarial">Perfil</a></li>
-              <li><a href="/meusProdutos">Meus Produtos</a></li>
+              <li><a href="/meusProdutos">Produtos</a></li>
               <li><a href="/sair" onclick="return confirm('Tem certeza que deseja sair?')">Sair</a></li>
               <% } else if (session.id_usuario) { %>
                 <li><a href="/produtos">Home</a></li>
@@ -33,7 +33,7 @@
 
   <% if (session.id_empresa) { %>
     <a href="/perfilEmpresarial">
-    <div class="card-foto">
+    <div class="card-foto-perfil">
       <div class="foto">
         <span>
           <% if (empresa.foto === null) { %>
@@ -48,7 +48,7 @@
   </a>
   <% } else if (session.id_usuario) { %>
     <a href="/perfil">
-      <div class="card-foto">
+      <div class="card-foto-perfil">
         <div class="foto">
           <span>
             <% if (usuario.foto === null) { %>
