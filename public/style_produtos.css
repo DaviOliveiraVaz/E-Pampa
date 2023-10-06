@@ -276,6 +276,38 @@ span.nome{
   background-color: #d2ca28;
 }
 
+.comprar-btn{
+  background-color: #015a2e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.comprar-btn:hover{
+  transform: scale(1.05);
+  background-color: #036936;
+}
+
+.favoritar-btn{
+  background-color: #fd5757;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none !important;
+  transition: all linear 160ms;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.favoritar-btn:hover{
+  transform: scale(1.05);
+  background-color: #b62424;
+}
+
 .excluir-btn{
   background-color: #EE302F;
   border-color: #EE302F;
