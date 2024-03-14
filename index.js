@@ -31,10 +31,6 @@ app.get("/", function (req, res) {
   res.render("tipo_login.ejs", {});
 });
 
-app.get("/teste", function (req, res) {
-  res.render("teste.ejs");
-});
-
 app.post('/consultarCEP', async (req, res) => {
   const inputCEP = req.body.cep;
 
@@ -431,7 +427,7 @@ app.post("/sairEmpresa", (req, res) => {
 });
 
 app.post("/cadastro", async (req, res) => {
-  const { nome, cpf, endereco, email, senha, telefone, cidade, pais } =
+  const { nome, cpf, endereco, email, senha, telefone, cidade, cep, numero } =
     req.body;
   const usuario = new Usuario(
     nome,
@@ -441,7 +437,8 @@ app.post("/cadastro", async (req, res) => {
     senha,
     telefone,
     cidade,
-    pais
+    cep,
+    numero
   );
 
   try {

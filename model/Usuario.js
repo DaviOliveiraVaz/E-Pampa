@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 class Usuario {
-  constructor(nome, cpf, endereco, email, senha, telefone, cidade, pais, sobre, foto) {
+  constructor(nome, cpf, endereco, email, senha, telefone, cidade, sobre, foto, cep, numero) {
     this.nome = nome;
     this.cpf = cpf;
     this.endereco = endereco;
@@ -23,9 +23,10 @@ class Usuario {
     this.senha = senha;
     this.telefone = telefone;
     this.cidade = cidade;
-    this.pais = pais;
     this.sobre = sobre;
     this.foto = foto;
+    this.cep = cep;
+    this.numero = numero;
   }
 
   async adicionar() {
@@ -49,8 +50,8 @@ class Usuario {
     }
 
     const [rows, fields] = await connection.execute(
-      'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.pais]
+      'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, cep, numero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.cep, this.numero]
     );
 
     await connection.end();
@@ -69,7 +70,7 @@ class Usuario {
     });
 
     const [editedRows, editedFields] = await connection.execute(
-      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=?, cidade=?, pais=?, sobre=? WHERE id=?',
+      'UPDATE usuario SET nome=?, cpf=?, endereco=?, email=?, senha=?, telefone=?, cidade=?, sobre=? cep=?, numero=? WHERE id=?',
       [
         usuario.nome,
         usuario.cpf,
@@ -78,8 +79,9 @@ class Usuario {
         senhaHash,
         usuario.telefone,
         usuario.cidade,
-        usuario.pais,
         usuario.sobre,
+        usuario.cep,
+        usuario.numero,
         Number.parseInt(id),
       ]
     );

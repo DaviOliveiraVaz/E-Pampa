@@ -14,111 +14,99 @@
     <form method="post" action="/cadastro" class="formLogin">
       <h1>Cadastro de Usuário</h1>
       <p>Digite os seus dados no campo abaixo.</p>
-        <section>
-          <div class="pai">
-            <div>
-              <label for="nome" id="atv">Nome</label>
-              <input type="text" name="nome" placeholder="Digite o seu nome" autofocus="true" id="atv" required>
-            </div>
-
-            <div>
-              <label for="cpf" id="atv">CPF</label>
-              <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv" required>
-            </div>
+      <section>
+        <div class="pai">
+          <div>
+            <label for="nome" id="atv">Nome</label>
+            <input type="text" name="nome" placeholder="Digite o seu nome" autofocus="true" id="atv" required>
           </div>
-
-         <div class="pai">
-            <div>
-              <label for="email" id="atv">E-mail</label>
-              <input type="email" name="email" placeholder="Digite o seu e-mail" id="atv" required>
-            </div>
-
-            <div>
-              <label for="senha" id="atv">Senha</label>
-              <input type="password" name="senha" placeholder="Digite uma senha" id="atv" required>
-            </div>
+          <div>
+            <label for="cpf" id="atv">CPF</label>
+            <input type="text" name="cpf" placeholder="Digite o seu cpf" id="atv" required>
           </div>
+        </div>
 
-          <div class="pai">
-            <div>
-              <label for="telefone" id="atv">Telefone</label>
-              <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" required>
-            </div>
-
-            <form id="cepForm">
-              <div>
-                <label for="cep" id="atv">Cep</label>
-                <input type="text" name="cep" placeholder="Digite o seu cep" id="atv input-cep" required>
-              </div>
-            </form>
-
+        <div class="pai">
+          <div>
+            <label for="email" id="atv">E-mail</label>
+            <input type="email" name="email" placeholder="Digite o seu e-mail" id="atv" required>
           </div>
-
-          <div class="pai">
-            <div>
-              <label for="endereco" id="atv">Endereco</label>
-              <input type="text" name="endereco" id="enderecoInput atv" placeholder="Digite o seu endereço" required>
-            </div>
-
-            <div>
-              <label for="numero" id="atv">Numero</label>
-              <input type="text" name="numero" placeholder="Digite o seu endereço" required>
-            </div>
+          <div>
+            <label for="senha" id="atv">Senha</label>
+            <input type="password" name="senha" placeholder="Digite uma senha" id="atv" required>
           </div>
+        </div>
 
-          <div class="pai">
-            <div>
-              <label for="cidade" id="atv">Cidade</label>
-              <input type="text" name="cidade" id="cidadeInput atv" placeholder="Digite a sua cidade" required>
-            </div>
-
-            <div>
-              <label for="pais" id="atv">País</label>
-            <input type="text" name="pais" id="paisInput atv" placeholder="Digite o seu país" required>
-            </div>
+        <div class="pai">
+          <div>
+            <label for="telefone" id="atv">Telefone</label>
+            <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" required>
           </div>
-        </section>
-        <section id="botoes">
-          <button type="reset" value="Acessar" class="cadastro">Apagar</button>
-          <button type="submit" value="Acessar" class="cadastro" id="env">Enviar</button>
-          <button type="button" id="consultarBtn" class="cadastro">Consultar CEP</button>
-        </section>
+          <div>
+            <label for="cep" id="atv">CEP</label>
+            <input type="text" name="cep" placeholder="Digite o seu cep" id="atv-input-cep" required>
+          </div>
+        </div>
+
+        <div class="pai">
+          <div>
+            <label for="endereco" id="atv">Rua</label>
+            <input type="text" name="endereco" id="enderecoInput" placeholder="Digite o seu endereço" required>
+          </div>
+          <div>
+            <label for="numero" id="atv">Numero</label>
+            <input type="text" name="numero" placeholder="Digite o seu endereço" required>
+          </div>
+        </div>
+
+        <div class="pai">
+          <div>
+            <label for="cidade" id="atv">Cidade</label>
+            <input type="text" name="cidade" id="cidadeInput" placeholder="Digite a sua cidade" required>
+          </div>
+        </div>
+      </section>
+
+      <section id="botoes">
+        <button type="reset" value="Acessar" class="cadastro">Apagar</button>
+        <button type="submit" value="Acessar" class="cadastro" id="env">Enviar</button>
+        <button type="button" id="consultarBtn" class="cadastro">Consultar CEP</button>
+      </section>
     </form>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('consultarBtn').addEventListener('click', consultarCEP);
-});
+      document.getElementById('consultarBtn').addEventListener('click', consultarCEP);
+    });
 
-async function consultarCEP() {
-  const inputCEP = document.getElementById('atv input-cep').value;
+    async function consultarCEP() {
+      const inputCEP = document.getElementById('atv-input-cep').value;
 
-    try {
+      try {
         const response = await fetch('/consultarCEP', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `cep=${encodeURIComponent(inputCEP)}`, // Use encodeURIComponent
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `cep=${encodeURIComponent(inputCEP)}`,
         });
 
         if (!response.ok) {
-            throw new Error('Error fetching CEP information');
+          throw new Error('Error fetching CEP information');
         }
 
         const endereco = await response.json();
         preencherCampos(endereco);
-    } catch (error) {
+      } catch (error) {
         console.error(error);
+      }
     }
-}
 
-function preencherCampos(endereco) {
-    document.getElementById('enderecoInput').value = endereco.street;
-    document.getElementById('cidadeInput').value = endereco.city;
-    document.getElementById('paisInput').value = endereco.country;
-}
+    function preencherCampos(endereco) {
+      document.getElementById('enderecoInput').value = endereco.street;
+      document.getElementById('cidadeInput').value = endereco.city;
+    }
   </script>
 </body>
 </html>
