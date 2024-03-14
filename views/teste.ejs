@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/cep-promise/dist/cep-promise.js" integrity="sua-chave-de-integridade-aqui" crossorigin="anonymous"></script>
+    <title>CEP PROMISE</title>
+</head>
+<body>
+    <form id="cepForm">
+        <label for="cep">CEP</label>
+        <input type="text" name="cep" id="input-cep" placeholder="Digite o seu CEP" required>
+        <button type="button" id="consultarBtn">Consultar CEP</button>
+    </form>
+
+    <label for="rua">Rua</label>
+    <input type="text" name="rua" id="input-rua" placeholder="Digite a sua rua" required>
+    <label for="bairro">Bairro</label>
+    <input type="text" name="bairro" id="input-bairro" placeholder="Digite o seu bairro" required>
+    <label for="cidade">Cidade</label>
+    <input type="text" name="cidade" id="input-cidade" placeholder="Digite a sua cidade" required>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('consultarBtn').addEventListener('click', consultarCEP);
+        });
+
+        async function consultarCEP() {
+            const inputCEP = document.getElementById('input-cep').value;
+
+            try {
+                const response = await fetch('/consultarCEP', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `cep=${inputCEP}`,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error fetching CEP information');
+                }
+
+                const endereco = await response.json();
+                preencherCampos(endereco);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function preencherCampos(endereco) {
+            document.getElementById('input-rua').value = endereco.street;
+            document.getElementById('input-bairro').value = endereco.neighborhood;
+            document.getElementById('input-cidade').value = endereco.city;
+        }
+    </script>
+</body>
+</html>

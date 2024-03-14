@@ -13,6 +13,7 @@ const bcrypt = require("bcrypt");
 const Empresa = require("./model/Empresa");
 const Usuario = require("./model/Usuario");
 const Produto = require("./model/Produto");
+const cep = require('cep-promise');
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,21 @@ app.use(
 
 app.get("/", function (req, res) {
   res.render("tipo_login.ejs", {});
+});
+
+app.get("/teste", function (req, res) {
+  res.render("teste.ejs");
+});
+
+app.post('/consultarCEP', async (req, res) => {
+  const inputCEP = req.body.cep;
+
+  try {
+      const endereco = await cep(inputCEP);
+      res.json(endereco);
+  } catch (error) {
+      res.status(500).json({ error: 'Error fetching CEP information' });
+  }
 });
 
 app.get("/login", function (req, res) {
