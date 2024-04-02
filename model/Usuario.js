@@ -31,31 +31,27 @@ class Usuario {
 
   async adicionar() {
     const senhaHash = await bcrypt.hash(this.senha, 10);
-
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
       password: '41491912',
       database: 'epampa',
     });
-
     const [existingRows, existingFields] = await connection.execute(
       'SELECT id FROM usuario WHERE email = ?',
       [this.email]
     );
-
     if (existingRows.length > 0) {
       await connection.end();
       throw new Error('E-mail já utilizado');
     }
-
+    const numero = this.numero || null;
+    const cep = this.cep || null;
     const [rows, fields] = await connection.execute(
       'INSERT INTO usuario (nome, cpf, endereco, email, senha, telefone, cidade, cep, numero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, this.cep, this.numero]
+      [this.nome, this.cpf, this.endereco, this.email, senhaHash, this.telefone, this.cidade, cep, numero]
     );
-
     await connection.end();
-
     return rows.insertId;
   }
 

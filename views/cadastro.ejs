@@ -43,7 +43,7 @@
             <input type="text" name="telefone" placeholder="Digite o seu telefone" id="atv" required>
           </div>
           <div>
-            <label for="cep" id="atv">CEP</label>
+            <label for="cep" id="atv",>CEP</label>
             <input type="text" name="cep" placeholder="Digite o seu cep" id="atv-input-cep" required>
           </div>
         </div>
@@ -82,6 +82,11 @@
 
     async function consultarCEP() {
       const inputCEP = document.getElementById('atv-input-cep').value;
+
+      if (!inputCEP) {
+        console.log('Por favor, preencha o campo de CEP.');
+        return;
+      }
 
       try {
         const response = await fetch('/consultarCEP', {

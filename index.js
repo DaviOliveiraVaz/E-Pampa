@@ -427,19 +427,8 @@ app.post("/sairEmpresa", (req, res) => {
 });
 
 app.post("/cadastro", async (req, res) => {
-  const { nome, cpf, endereco, email, senha, telefone, cidade, cep, numero } =
-    req.body;
-  const usuario = new Usuario(
-    nome,
-    cpf,
-    endereco,
-    email,
-    senha,
-    telefone,
-    cidade,
-    cep,
-    numero
-  );
+  const { nome, cpf, endereco, email, senha, telefone, cidade, cep, numero } = req.body;
+  const usuario = new Usuario(nome, cpf, endereco, email, senha, telefone, cidade, cep, numero);
 
   try {
     const idInserido = await usuario.adicionar();
@@ -449,6 +438,9 @@ app.post("/cadastro", async (req, res) => {
     );
   } catch (error) {
     let mensagem = "Erro ao cadastrar usuário.";
+    console.log(error);
+    console.log("Valores dos parâmetros:", usuario.nome, usuario.cpf, usuario.endereco, usuario.email, usuario.senha, usuario.telefone, usuario.cidade, usuario.cep, usuario.numero);
+    console.log("Valores recebidos no corpo da requisição:", req.body);
     if (error.message.includes("E-mail já utilizado")) {
       mensagem = `${mensagem} E-mail já utilizado!`;
     }
